@@ -2,8 +2,19 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const Schema = mongoose.Schema;
 
-const validEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+const validEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
+//validation function used to check password strength and then hash the password if it passes
+function validateAndHash(password){
+    const passwordStrength = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,20}$/;
+    if(!passwordStrength.test(password)){
+        return false;
+    }
+    else{
+        const salt = bcrypt.genSaltSync(10);
+        this.password = bcrypt.hashSync(password, salt);
+    }
+}
 
 const UserSchema = new Schema({
     email: {
@@ -11,22 +22,23 @@ const UserSchema = new Schema({
         trim: true,
         lowercase: true,
         unique: true,
-        require: 'Email address is required',
-        match : [validEmail, 'Please enter a valid email address']
+        required: true,
+        match : [validEmail, 'E-mail is invalid']
     },
     password: {
         type: String,
-        require: 'Password is required'
+        required: true,
+        validate: [
+            validateAndHash,
+            "Password does not meet requirements"
+        ]
+    },
+    role: {
+        type: String,
+        required: true,
+        enum: ['employee', 'manager', 'admin'],
+        require: 'User must have a valid role'
     }
-});
-
-UserSchema.pre('save', function(next) {
-    const user = this;
-    const salt = bcrypt.genSaltSync(10);
-    if (!user.isModified('password')) return next();
-
-    user.password = bcrypt.hashSync(user.password, salt);
-    next();
 });
 
 module.exports = UserSchema;
