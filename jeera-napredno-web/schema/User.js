@@ -37,8 +37,12 @@ const UserSchema = new Schema({
         type: String,
         required: true,
         enum: ['employee', 'manager', 'admin'],
-        require: 'User must have a valid role'
-    }
+        required: 'User must have a valid role'
+    },
+    tasks: [{
+        type: Schema.Types.ObjectId,
+        ref: "Task",
+    }]
 });
 
 module.exports = UserSchema;
