@@ -7,7 +7,8 @@ module.exports.addUser = function (req, res) {
         {
             email: req.body.email,
             password: req.body.password,
-            role: req.body.role
+            role: req.body.role,
+            level: req.body.level
         }
     );
 

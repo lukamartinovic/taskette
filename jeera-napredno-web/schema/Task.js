@@ -13,6 +13,7 @@ const TaskSchema = new Schema({
     status: {
         type: String,
         enum: ["To Do", "In progress", "Done"],
+        default: "To Do"
 
     },
     points: {
@@ -27,6 +28,11 @@ const TaskSchema = new Schema({
     project: {
         type: Schema.Types.ObjectId,
         ref: "Project",
+        required: true
+    },
+    sprint: {
+        type: Schema.Types.ObjectId,
+        ref: "Sprint",
         required: true
     }
 });

@@ -11,7 +11,8 @@ module.exports.addTask = function (req, res) {
             name: req.body.name,
             description: req.body.description,
             points: req.body.points,
-            user: req.body.user
+            user: req.body.user,
+            sprint: req.body.sprint
         }
     );
 

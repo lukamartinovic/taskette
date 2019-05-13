@@ -16,6 +16,11 @@ function validateAndHash(password){
     }
 }
 
+function validateLevel(level){
+    if((level !== null && this.role !== "manager") || (this.role === "manager" && level == null))
+        return false;
+}
+
 const UserSchema = new Schema({
     email: {
         type: String,
@@ -42,7 +47,11 @@ const UserSchema = new Schema({
     tasks: [{
         type: Schema.Types.ObjectId,
         ref: "Task",
-    }]
+    }],
+    level: {
+        type: Number,
+        validate: [validateLevel, "Invalid user level value"]
+    }
 });
 
 module.exports = UserSchema;

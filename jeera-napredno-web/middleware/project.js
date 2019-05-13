@@ -4,6 +4,8 @@ const userSchema = require('../schema/User');
 const companySchema = require('../schema/Company');
 const projectSchema = require('../schema/Project');
 
+const Schema = mongoose.Schema;
+
 module.exports.addProject = function (req, res) {
     const Project = mongoose.model('Project', projectSchema);
 
@@ -11,8 +13,7 @@ module.exports.addProject = function (req, res) {
         {
             name: req.body.name,
             description: req.body.description,
-            company: req.body.company,
-            users: req.body.users
+            company: req.body.company
         }
     );
 
@@ -23,10 +24,35 @@ module.exports.addProject = function (req, res) {
             res.status(200).send(newProject);
         }
     });
+
+
 };
 
-
 module.exports.addUserToProject = function (req, res) {
-    const User = mongoose.model('User', userSchema);
     const Project = mongoose.model('Project', projectSchema)
+
+    Project.updateOne(
+        { _id: req.params.id },
+        { $addToSet: { users: { $each: req.body.users } }},
+        function(err, project){
+            if(err) {
+                return res.status(400).send(err);
+            } else {
+                res.status(200).send(project);
+            }
+        })
+
+};
+
+module.exports.removeProject = function (req, res) {
+    const Project = mongoose.model('Project', projectSchema);
+    const projectId = req.body.id;
+
+    Project.remove({_id: projectId}, function(err, project){
+        if (err) {
+            return res.status(400).send(err);
+        } else {
+            res.status(200).send(project);
+        }
+    });
 };
