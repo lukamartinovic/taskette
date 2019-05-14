@@ -12,8 +12,13 @@ router.get('/', function (req, res) {
 
 router.post('/user/add', user.addUser);
 router.post('/task/add', task.addTask);
+router.delete('/task/:id/', task.removeTask);
+
 router.post('/project/add', project.addProject);
-router.post('/project/:id/addUser', project.addUserToProject);
+router.post('/project/:id/addUser', project.addUser);
+router.post('/project/:id/addSprint', project.addSprint);
+
+
 router.post('/sprint/add', sprint.addSprint);
 
 module.exports = router;

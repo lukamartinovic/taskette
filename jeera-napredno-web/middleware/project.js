@@ -28,8 +28,8 @@ module.exports.addProject = function (req, res) {
 
 };
 
-module.exports.addUserToProject = function (req, res) {
-    const Project = mongoose.model('Project', projectSchema)
+module.exports.addUser = function (req, res) {
+    const Project = mongoose.model('Project', projectSchema);
 
     Project.updateOne(
         { _id: req.params.id },
@@ -41,6 +41,23 @@ module.exports.addUserToProject = function (req, res) {
                 res.status(200).send(project);
             }
         })
+
+};
+
+module.exports.addSprint = function (req, res) {
+    const Project = mongoose.model('Project', projectSchema);
+
+    Project.updateOne(
+        { _id: req.params.id },
+        { $addToSet: { sprints: { $each: req.body.sprints }}},
+        function (err, project) {
+            if(err) {
+                return res.status(400).send(err);
+            } else {
+                res.status(200).send(project);
+            }
+        }
+    )
 
 };
 

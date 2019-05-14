@@ -25,11 +25,6 @@ const TaskSchema = new Schema({
         ref: "User",
         required: true
     },
-    project: {
-        type: Schema.Types.ObjectId,
-        ref: "Project",
-        required: true
-    },
     sprint: {
         type: Schema.Types.ObjectId,
         ref: "Sprint",
