@@ -11,6 +11,9 @@ router.get('/', function (req, res) {
 });
 
 router.post('/user/add', user.addUser);
+router.delete('/user/:id/', user.removeUser);
+
+
 router.post('/task/add', task.addTask);
 router.delete('/task/:id/', task.removeTask);
 

@@ -1,5 +1,14 @@
 const mongoose = require('mongoose');
+const sprintSchema = require('./Sprint');
 const Schema = mongoose.Schema;
+
+
+async function validatePoints(points){
+    const Sprint = mongoose.model('Sprint', sprintSchema);
+    const sprintPromise = Sprint.find({_id: this.sprint}).exec();
+    const sprint = await sprintPromise;
+    return(sprint[0].points >= this.points);
+}
 
 const TaskSchema = new Schema({
     name: {
@@ -14,11 +23,12 @@ const TaskSchema = new Schema({
         type: String,
         enum: ["To Do", "In progress", "Done"],
         default: "To Do"
-
     },
     points: {
         type: Number,
-        required: true
+        min: 1,
+        required: true,
+        validate: [validatePoints, "Invalid number of points"]
     },
     user: {
         type: Schema.Types.ObjectId,
@@ -31,5 +41,7 @@ const TaskSchema = new Schema({
         required: true
     }
 });
+
+
 
 module.exports = TaskSchema;

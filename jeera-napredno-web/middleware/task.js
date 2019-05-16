@@ -63,7 +63,7 @@ module.exports.removeTask = function (req, res) {
                         if(err){
                             res.status(400).send(err)
                         }
-                    })
+                    });
                 Sprint.updateOne(
                     { tasks: req.params.id },
                     { $pull: { tasks: req.params.id }},

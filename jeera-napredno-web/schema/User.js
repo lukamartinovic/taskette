@@ -17,7 +17,7 @@ function validateAndHash(password){
 }
 
 function validateLevel(level){
-    if((level !== null && this.role !== "manager") || (this.role === "manager" && level == null))
+    if((level !== null && this.role !== "manager") || (this.role === "manager" && this.level === null))
         return false;
 }
 
@@ -40,9 +40,8 @@ const UserSchema = new Schema({
     },
     role: {
         type: String,
-        required: true,
+        required: 'User must have a valid role',
         enum: ['employee', 'manager', 'admin'],
-        required: 'User must have a valid role'
     },
     tasks: [{
         type: Schema.Types.ObjectId,
@@ -50,6 +49,7 @@ const UserSchema = new Schema({
     }],
     level: {
         type: Number,
+        default: null,
         validate: [validateLevel, "Invalid user level value"]
     }
 });
