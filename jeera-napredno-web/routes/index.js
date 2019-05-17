@@ -16,6 +16,7 @@ router.delete('/user/:id/', user.removeUser);
 
 router.post('/task/add', task.addTask);
 router.delete('/task/:id/', task.removeTask);
+router.post('/task/edit', task.editTask);
 
 router.post('/project/add', project.addProject);
 router.post('/project/:id/addUser', project.addUser);

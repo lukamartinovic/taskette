@@ -15,7 +15,14 @@ const SprintSchema = mongoose.Schema({
     },
     points: {
         type: Number,
-        required: true
+        required: true,
+        min: 0,
+    },
+    currentPoints: {
+        type: Number,
+        max: this.points,
+        min: 0,
+        default: 0
     },
     startDate: {
         type: Date,

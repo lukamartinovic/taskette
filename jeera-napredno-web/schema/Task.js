@@ -7,7 +7,7 @@ async function validatePoints(points){
     const Sprint = mongoose.model('Sprint', sprintSchema);
     const sprintPromise = Sprint.find({_id: this.sprint}).exec();
     const sprint = await sprintPromise;
-    return(sprint[0].points >= this.points);
+    return(sprint[0].points - sprint[0].currentPoints >= this.points);
 }
 
 const TaskSchema = new Schema({
@@ -28,7 +28,7 @@ const TaskSchema = new Schema({
         type: Number,
         min: 1,
         required: true,
-        validate: [validatePoints, "Invalid number of points"]
+        validate: [validatePoints, "invalid number of points"]
     },
     user: {
         type: Schema.Types.ObjectId,
