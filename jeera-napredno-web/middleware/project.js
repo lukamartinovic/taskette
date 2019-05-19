@@ -13,7 +13,8 @@ module.exports.addProject = function (req, res) {
         {
             name: req.body.name,
             description: req.body.description,
-            company: req.body.company
+            company: req.body.company,
+            users: req.body.users
         }
     );
 

@@ -33,10 +33,10 @@ const SprintSchema = mongoose.Schema({
         type: Date,
         required: true
     },
-    tasks: {
+    tasks: [{
         type: Schema.Types.ObjectId,
         ref: "Task"
-    }
+    }]
 });
 
 module.exports = SprintSchema;
