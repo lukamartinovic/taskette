@@ -16,7 +16,8 @@ const ProjectSchema = new Schema({
     }],
     company: {
         type: Schema.Types.ObjectId,
-        ref: "Company"
+        ref: "Company",
+        required: true
     },
     sprints: {
         type: Schema.Types.ObjectId,

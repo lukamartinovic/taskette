@@ -33,7 +33,7 @@ module.exports.addTask = async function (req, res, next) {
     }
 };
 
-module.exports.removeTask = async function(req, res) {
+module.exports.removeTask = async function(req, res, next) {
     const Task = mongoose.model('Task', taskSchema);
     const User = mongoose.model('User', userSchema);
     const Sprint = mongoose.model('Sprint', sprintSchema);
@@ -53,11 +53,11 @@ module.exports.removeTask = async function(req, res) {
             (result) => { res.send(result)}
         )
     } catch(error){
-        return res.status(400).send(error)
+        return next(err);
     }
 };
 
-module.exports.editTask = async function editTask(req, res){
+module.exports.editTask = async function editTask(req, res, next){
     const Task = mongoose.model('Task', taskSchema);
 
     try {
@@ -72,7 +72,7 @@ module.exports.editTask = async function editTask(req, res){
         res.send(task);
     }
     catch(err){
-        res.status(400).send(err);
+        return next(err);
     }
 
 };

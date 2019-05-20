@@ -5,25 +5,27 @@ const task = require('../middleware/task');
 const project = require('../middleware/project');
 const sprint = require('../middleware/sprint');
 const errorHandler = require('../middleware/errorHandler').errorHandler;
+const company = require('../middleware/company');
 
 router.get('/', function (req, res) {
     res.send("Express running")
 });
 
-router.post('/user/add', user.addUser);
-router.delete('/user/:id/', user.removeUser);
+router.post('/user/add', user.addUser, errorHandler);
+router.delete('/user/:id/', user.removeUser, errorHandler);
 
 
 router.post('/task/add', task.addTask, errorHandler);
-router.delete('/task/:id/', task.removeTask);
-router.post('/task/edit', task.editTask);
+router.delete('/task/:id/', task.removeTask, errorHandler);
+router.post('/task/edit', task.editTask, errorHandler);
 
-router.post('/project/add', project.addProject);
-router.post('/project/:id/addUser', project.addUser);
-router.post('/project/:id/addSprint', project.addSprint);
+router.post('/project/add', project.addProject, errorHandler);
+router.post('/project/:id/addUser', project.addUser, errorHandler);
+router.post('/project/:id/addSprint', project.addSprint, errorHandler);
 
 
-router.post('/sprint/add', sprint.addSprint);
+router.post('/sprint/add', sprint.addSprint, errorHandler);
 
+router.post('/company/add', company.addCompany, errorHandler);
 
 module.exports = router;

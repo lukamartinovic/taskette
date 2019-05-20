@@ -2,9 +2,9 @@ const mongoose = require('mongoose');
 const userSchema = require('../schema/User');
 const taskSchema = require('../schema/Task');
 const projectSchema = require('../schema/Project');
+const User = mongoose.model('User', userSchema);
 
-module.exports.addUser = function (req, res) {
-    const User = mongoose.model('User', userSchema);
+module.exports.addUser = function (req, res, next) {
     const newUser = new User(
         {
             email: req.body.email,
@@ -14,35 +14,18 @@ module.exports.addUser = function (req, res) {
         }
     );
 
-    newUser.save(function (err, newUser) {
-        if (err) {
-            res.status(400).send(err);
-        } else {
-            res.json(newUser).status(201);
-        }
-    })
+    newUser.save
+        .then((doc) => {return res.send(doc)})
+        .catch((err) => {return next(err)})
 };
 
 
 //TODO
-module.exports.removeUser = function (req,res) {
-    const User = mongoose.model('User', userSchema);
+module.exports.removeUser = async function (req, res, next) {
+
     const Task = mongoose.model('Task', taskSchema);
     const Project = mongoose.model('Project', projectSchema);
-    User.deleteOne({_id: req.params.id}, function(err, succ) {
-        if(err){
-            res.status(400).send(err)
-        } else {
-            Task.deleteMany(
-                {user: req.params.id},
-                (err) => { if(err) return res.status(400).send(err);}
-                );
-            Project.updateMany(
-                {users: req.params.id},
-                { $pull: { users: req.params.id}},
-                (err) => { if(err) return res.status(400).send(err);}
-            );
-            res.status(200).send(succ);
-        }
-    })
+
+
+
 };
