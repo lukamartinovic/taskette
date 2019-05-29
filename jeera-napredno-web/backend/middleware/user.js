@@ -1,10 +1,9 @@
 const mongoose = require('mongoose');
-const userSchema = require('../schema/User');
-const taskSchema = require('../schema/Task');
 const projectSchema = require('../schema/Project');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model('User', require('../schema/User'));
+const Task = mongoose.model('Task', require('../schema/Task'));
 
 module.exports.addUser = async function (req, res, next) {
 
@@ -30,7 +29,7 @@ module.exports.login = async function (req, res, next) {
          const compare = await bcrypt.compare(req.body.password, user.password);
          if(!compare) throw loginErr;
          const token = jwt.sign(
-             {email:user.email, role: user.role, level: user.level},
+             {email:user.email, role: user.role, level: user.level, id: user._id},
              process.env.SECRET,
              {expiresIn:"1d"}
 
@@ -42,18 +41,23 @@ module.exports.login = async function (req, res, next) {
 
 module.exports.authenticate = async function(req, res, next){
     try {
-        await jwt.verify(req.body.token, process.env.SECRET);
+        const payload = await jwt.verify(req.body.token, process.env.SECRET);
+        req.body.authPayload = payload;
         next();
-    } catch(err) {return next(err)};
+    } catch(err) {return next(err)}
+};
+
+module.exports.showTasks = async function(req, res, next){
+    try{
+        if(req.body.user !== req.body.authPayload.id)
+            throw {message:"Unauthorized"};
+        console.log(req.body);
+        const userTasks = await Task.find({user: req.body.user});
+        res.send(userTasks);
+    }catch(err) {return next(err)}
 };
 
 
 //TODO
 module.exports.removeUser = async function (req, res, next) {
-
-    const Task = mongoose.model('Task', taskSchema);
-    const Project = mongoose.model('Project', projectSchema);
-
-
-
 };

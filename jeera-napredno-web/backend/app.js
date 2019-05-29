@@ -1,4 +1,5 @@
-var express = require('express');
+var express = require('express')
+
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
@@ -11,6 +12,7 @@ mongoose.connect('mongodb://localhost:27017/', {useNewUrlParser:true, dbName: 'd
 
 var app = express();
 
+require('dotenv').config();
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
