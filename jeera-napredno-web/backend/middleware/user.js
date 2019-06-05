@@ -36,7 +36,7 @@ module.exports.login = async function (req, res, next) {
          );
          res.send(token);
      }
-     catch(err){return next(err)}
+     catch(err){return next(new Error("401"))}
 };
 
 module.exports.authenticate = async function(req, res, next){
@@ -44,7 +44,7 @@ module.exports.authenticate = async function(req, res, next){
         const payload = await jwt.verify(req.body.token, process.env.SECRET);
         req.body.authPayload = payload;
         next();
-    } catch(err) {return next(err)}
+    } catch(err) {return next(new Error("401"))}
 };
 
 module.exports.showTasks = async function(req, res, next){
@@ -57,6 +57,12 @@ module.exports.showTasks = async function(req, res, next){
     }catch(err) {return next(err)}
 };
 
+module.exports.showUsers = async function(req, res, next){
+    try{
+         const users = await User.find({});
+         res.send(users);
+    }catch(err) {return next(err)}
+}
 
 //TODO
 module.exports.removeUser = async function (req, res, next) {
