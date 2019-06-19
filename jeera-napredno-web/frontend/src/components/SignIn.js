@@ -1,10 +1,9 @@
 import React, {useContext, useState} from 'react';
+import {Redirect} from 'react-router-dom';
 import axios from 'axios';
-import AuthContext from '../context/AuthContext'
-import Form from 'react-bootstrap/Form'
-import Button from 'react-bootstrap/Button'
-import Card from 'react-bootstrap/Card'
-import Container from 'react-bootstrap/Container'
+import AuthContext from '../context/AuthContext';
+import {Form, Button, Card, Container} from 'react-bootstrap';
+import api from '../api/api';
 
 function SignIn(props){
     const context = useContext(AuthContext);
@@ -16,16 +15,14 @@ function SignIn(props){
     };
 
     const handleLogin = (e) => {
-        axios.post('http://localhost:3000/user/login', {email: authState.email, password: authState.password})
-            .then((res) => {
-                context.authenticate(true, res.data, authState.email);
-                console.log(res, context)
-                props.history.push('/')
-            })
-            .catch((err) => {console.log(err)})
+        api.login(
+            authState.email,
+            authState.password,
+            (res) => {context.authenticate(true, res.data.token, res.data.email, res.data.level, res.data._id)}
+        );
     };
-
-    return(<div>
+    if(!context.loggedIn)
+    return(
         <Container style={{ width: '22rem', marginTop: '3em'}}>
         <Card style={{padding:"1em"}}>
             <Form>
@@ -44,7 +41,10 @@ function SignIn(props){
             </Form>
         </Card>
         </Container>
-    </div>)
+    )
+    return(
+        <Redirect to="/"/>
+    )
 }
 
 export default SignIn;

@@ -3,9 +3,11 @@ import React, {useContext, useEffect, useState} from 'react';
 import './App.css';
 import SignIn from './components/SignIn'
 import Users from './components/Users'
-import {BrowserRouter as Router, Route} from "react-router-dom";
+import {BrowserRouter as Router, Route, Redirect} from "react-router-dom";
 import AuthContext from './context/AuthContext'
 import Navigation from './components/Navigation'
+import MainLayout from './components/MainLayout'
+
 
 function App() {
 
@@ -14,23 +16,49 @@ function App() {
         loggedIn: false,
         token: ""
     });
-    useEffect(() => console.log('mounted or updated'));
-  return (
-      <AuthContext.Provider
-          value={{authentication,
-          authenticate: (loggedIn, token, email) => {
-          setAuth({loggedIn: loggedIn, token: token, email: email})
-      }}}>
-          <Router>
-              <div className="App">
-                  <Navigation/>
-                  <Route path="/users" component={Users}/>
-                  <Route path="/login" component={SignIn}/>
-              </div>
-          </Router>
-      </AuthContext.Provider>
 
-  );
+    function PrivateRoute({component: Component, ...rest}) {
+        return (
+            <Route
+                {...rest}
+                render={props =>
+                    authentication.loggedIn ? (
+                        <Component {...props} />
+                    ) : (
+                        <Redirect
+                            to={{
+                                pathname: "/login",
+                                state: {from: props.location}
+                            }}
+                        />
+                    )
+                }
+            />
+
+        )
+    }
+
+    return (
+        <AuthContext.Provider
+            value={{
+                authentication,
+                authenticate: (loggedIn, token, email, level, _id) => {
+                    setAuth({loggedIn: loggedIn, token: token, email: email, level: level, _id: _id})
+                }
+            }}>
+            <Router>
+                {authentication.loggedIn ?
+                    <div className="App">
+                        <Navigation/>
+                        <Route path="/" component={MainLayout}/>
+                    </div>
+                    :
+                    <SignIn/>
+                }
+            </Router>
+        </AuthContext.Provider>
+
+    );
 }
 
 export default App;

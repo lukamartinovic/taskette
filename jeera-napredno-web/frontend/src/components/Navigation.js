@@ -10,9 +10,6 @@ import FormControl from 'react-bootstrap/FormControl'
 function Navigation(props){
     const context = useContext(AuthContext);
     const [auth, setAuth] = useState(context);
-
-    console.log(context.email)
-
     function searchBar(){
         if(context.loggedIn)
             return(

@@ -34,7 +34,7 @@ module.exports.login = async function (req, res, next) {
              {expiresIn:"1d"}
 
          );
-         res.send(token);
+         res.send({token, level: user.level, email: user.email, _id: user._id});
      }
      catch(err){return next(new Error("401"))}
 };
@@ -62,7 +62,14 @@ module.exports.showUsers = async function(req, res, next){
          const users = await User.find({});
          res.send(users);
     }catch(err) {return next(err)}
-}
+};
+
+module.exports.getId = async function(req, res, next){
+  try{
+      const user = await User.findOne({email: req.body.email});
+      res.send(user._id)
+  }  catch(err) {return next(err)}
+};
 
 //TODO
 module.exports.removeUser = async function (req, res, next) {

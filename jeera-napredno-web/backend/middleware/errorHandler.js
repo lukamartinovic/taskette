@@ -1,5 +1,6 @@
 module.exports.errorHandler = function (err, req, res, next) {
     console.log(err.message);
+    console.log(req.body);
     switch(err.message){
         case "Unauthorized":
             return res.status(403).send(err.message).end();
