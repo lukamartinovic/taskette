@@ -18,6 +18,11 @@ const api = {
         axios.post(endpoints.changeTaskStatus, {id: _id, token: token, status: status})
             .then((res) => callback(res))
             .catch((err) => {console.log(err)})
+    },
+    getUsers(token, callback){
+        axios.post(endpoints.getUsers, {token:token})
+            .then((res) => callback(res))
+            .catch((err) => console.log(err))
     }
 };
 

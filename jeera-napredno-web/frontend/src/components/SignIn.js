@@ -1,6 +1,5 @@
 import React, {useContext, useState} from 'react';
 import {Redirect} from 'react-router-dom';
-import axios from 'axios';
 import AuthContext from '../context/AuthContext';
 import {Form, Button, Card, Container} from 'react-bootstrap';
 import api from '../api/api';
@@ -18,7 +17,7 @@ function SignIn(props){
         api.login(
             authState.email,
             authState.password,
-            (res) => {context.authenticate(true, res.data.token, res.data.email, res.data.level, res.data._id)}
+            (res) => {context.authenticate(true, res.data.token, res.data.email, res.data.level, res.data._id, res.data.role)}
         );
     };
     if(!context.loggedIn)

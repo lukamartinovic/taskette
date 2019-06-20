@@ -11,7 +11,7 @@ router.get('/', function (req, res) {
     res.send("Express running")
 });
 
-router.get('/users', user.showUsers, errorHandler);
+router.post('/users', user.authenticate, user.showUsers, errorHandler);
 
 router.post('/user/add', user.authenticate, user.addUser, errorHandler);
 router.delete('/user/:id/', user.removeUser, errorHandler);

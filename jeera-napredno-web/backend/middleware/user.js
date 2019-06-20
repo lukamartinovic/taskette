@@ -11,7 +11,7 @@ module.exports.addUser = async function (req, res, next) {
         {
             email: req.body.email,
             password: req.body.password,
-            role: req.body.role,
+            role: req.body.role.toUpperCase(),
             level: req.body.level
         };
 
@@ -34,7 +34,7 @@ module.exports.login = async function (req, res, next) {
              {expiresIn:"1d"}
 
          );
-         res.send({token, level: user.level, email: user.email, _id: user._id});
+         res.send({token, level: user.level, email: user.email, _id: user._id, role: user.role});
      }
      catch(err){return next(new Error("401"))}
 };
@@ -58,7 +58,11 @@ module.exports.showTasks = async function(req, res, next){
 };
 
 module.exports.showUsers = async function(req, res, next){
+
     try{
+        const payload = await jwt.verify(req.body.token, process.env.SECRET);
+        if (payload.role !== "ADMIN")
+            throw {message:"Unauthorized"};
          const users = await User.find({});
          res.send(users);
     }catch(err) {return next(err)}

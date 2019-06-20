@@ -1,10 +1,9 @@
 import React, {useContext, useState, useEffect} from 'react';
-import Container from "react-bootstrap/Container";
-import Task from "./Task";
+import {Task, ActiveTask}from "./";
+import {Col, Row, Container} from "react-bootstrap";
 import AuthContext from "../context/AuthContext";
 import api from "../api/api";
-import {Col, Row} from "react-bootstrap";
-import ActiveTask from "./ActiveTask"
+
 
 function Tasks(props){
 
@@ -21,7 +20,7 @@ function Tasks(props){
             (res) =>{
                 setTasks(res.data);
             })
-    }, [fetch, activeTask]);
+    }, [fetch, activeTask, authContext.authentication.token, authContext.authentication._id]);
 
     function findActiveTask(){
         return tasks.find(

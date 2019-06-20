@@ -41,7 +41,7 @@ const UserSchema = new Schema({
     role: {
         type: String,
         required: 'User must have a valid role',
-        enum: ['employee', 'manager', 'admin'],
+        enum: ['EMPLOYEE', 'MANAGER', 'ADMIN'],
     },
     tasks: [{
         type: Schema.Types.ObjectId,
