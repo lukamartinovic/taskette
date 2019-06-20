@@ -1,34 +1,37 @@
 import React, {useContext, useState, useEffect} from 'react';
 import axios from 'axios';
 import AuthContext from '../context/AuthContext'
-import Form from 'react-bootstrap/Form'
-import Button from 'react-bootstrap/Button'
-import Navbar from 'react-bootstrap/Navbar'
-import Nav from 'react-bootstrap/Nav'
-import FormControl from 'react-bootstrap/FormControl'
+import { LinkContainer } from 'react-router-bootstrap';
+import { Form, Button, Navbar, Nav, FormControl, NavDropdown} from "react-bootstrap";
+import {Link} from 'react-router-dom'
+import NavItem from "react-bootstrap/NavItem";
 
 function Navigation(props){
     const context = useContext(AuthContext);
     const [auth, setAuth] = useState(context);
-    function searchBar(){
-        if(context.loggedIn)
-            return(
-                <Form inline>
-                    <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-                    <Button variant="outline-primary">Search</Button>
-                    <span>{context.email}</span>
-                </Form>
-            )
-    }
 
     return(
-        <Navbar sticky="top" bg="light" variant="light">
-        <Navbar.Brand href="#home">Jeera</Navbar.Brand>
-            {context.authentication.email}
-        <Nav className="mr-auto">
-        </Nav>
-
-    </Navbar>)
+        <Navbar bg="light" variant="light">
+            <Navbar.Brand>Jeera</Navbar.Brand>
+            <Nav className="mr-auto">
+                <LinkContainer to={"/"}>
+                    <Nav.Link>Home</Nav.Link>
+                </LinkContainer>
+                <LinkContainer to={"/tasks"}>
+                    <Nav.Link>Tasks</Nav.Link>
+                </LinkContainer>
+            </Nav>
+            <Nav className="ml-auto">
+                <NavDropdown title={context.authentication.email}>
+                    <LinkContainer to={"/signout"}>
+                        <NavDropdown.Item>Sign out</NavDropdown.Item>
+                    </LinkContainer>
+                    <NavDropdown.Divider /><LinkContainer to={"/settings"}>
+                    <NavDropdown.Item>Settings</NavDropdown.Item>
+                </LinkContainer>
+                </NavDropdown>
+            </Nav>
+        </Navbar>)
 }
 
 export default Navigation;

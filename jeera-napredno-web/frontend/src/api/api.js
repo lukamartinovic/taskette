@@ -9,8 +9,13 @@ const api = {
             .then((res) => callback(res))
             .catch((err) => {console.log(err)})
     },
-    getTasks(_id, token, callback){
+    async getTasks(_id, token, callback){
         axios.post(endpoints.getTasks, {user: _id, token: token})
+            .then((res) => callback(res))
+            .catch((err) => {console.log(err)})
+    },
+    changeTaskStatus(_id, status, token, callback){
+        axios.post(endpoints.changeTaskStatus, {id: _id, token: token, status: status})
             .then((res) => callback(res))
             .catch((err) => {console.log(err)})
     }

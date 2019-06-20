@@ -23,6 +23,7 @@ router.post('/user/getid', user.getId, errorHandler);
 router.post('/task/add', task.addTask, errorHandler);
 router.delete('/task/:id/', task.removeTask, errorHandler);
 router.post('/task/edit', task.editTask, errorHandler);
+router.post('/task/changeStatus', user.authenticate, task.changeTaskStatus, errorHandler)
 
 router.post('/project/add', project.addProject, errorHandler);
 router.post('/project/:id/addUser', project.addUser, errorHandler);

@@ -1,26 +1,21 @@
 import React, {useContext, useState, useEffect} from 'react';
-import {Card} from "react-bootstrap";
+import {Card, Form, Col} from "react-bootstrap";
+import api from '../api/api'
+import AuthContext from "../context/AuthContext";
+
 
 function Task(props){
+    const authContext = useContext(AuthContext);
+    const [task, setTask] = useState(props.task);
+
     return(
-        props.activeTask ?
-                <Card>
+                <Card bg="light"
+                      style={{ marginBottom: "0.5em" }}
+                      onClick={() => {props.activateTask(props.task._id); console.log("clicked", props.task._id)}}>
                     <Card.Body style={{textAlign:"left"}}>
-                        <Card.Title>{props.name}</Card.Title>
-                        <Card.Subtitle className="mb-2 text-muted">{`${props.task.points} Points`}</Card.Subtitle>
-                        <Card.Text>
-                            {props.description}
-                        </Card.Text>
-                    </Card.Body>
-                </Card>
-        :
-                <Card
-                      style={{ width: '22rem', marginBottom: "0.5em" }}
-                      onClick={() => {props.activateTask(props.task)}}>
-                    <Card.Body style={{textAlign:"left"}}>
-                        <Card.Title>{props.name}</Card.Title>
+                        <Card.Title>{`${props.task.name} ${props.task.status === "DONE" ? " ✔" : ""}`}</Card.Title>
                         <Card.Text className={"text-truncate"}>
-                            {props.description}
+                            {props.task.description}
                         </Card.Text>
                     </Card.Body>
                 </Card>

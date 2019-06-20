@@ -2,31 +2,37 @@ import React, {useContext, useState, useEffect} from 'react';
 import Container from "react-bootstrap/Container";
 import Task from "./Task";
 import AuthContext from "../context/AuthContext";
-import Axios from "axios";
 import api from "../api/api";
 import {Col, Row} from "react-bootstrap";
-
+import ActiveTask from "./ActiveTask"
 
 function Tasks(props){
 
-    const context = useContext(AuthContext);
+    const authContext = useContext(AuthContext);
     const [tasks, setTasks] = useState([]);
     const [activeTask, setActiveTask] = useState(null);
-
-    function activateTask(task){
-        setActiveTask(task)
-    }
-
-    console.log(activeTask);
+    const [fetch, refetch] = useState(false);
 
     useEffect(() => {
+        console.log(fetch);
         api.getTasks(
-            context.authentication._id,
-            context.authentication.token,
+            authContext.authentication._id,
+            authContext.authentication.token,
             (res) =>{
                 setTasks(res.data);
-            });
-    }, []);
+            })
+    }, [fetch, activeTask]);
+
+    function findActiveTask(){
+        return tasks.find(
+            task => {return task._id === activeTask;}
+        )
+    }
+
+    function activateTask(task_id){
+        setActiveTask(task_id)
+    }
+
     return(
 
         <Container>
@@ -34,8 +40,6 @@ function Tasks(props){
                 <Col md={4}>
                     {tasks.map((task) =>
                         <Task task={task}
-                              name={task.name}
-                              description={task.description}
                               key={task._id}
                               activateTask={activateTask}/>)
                     }
@@ -43,14 +47,11 @@ function Tasks(props){
                 <Col md={8}>
                     <Container>
                         {activeTask ?
-                            <Task
-                                task={activeTask}
-                                name={activeTask.name}
-                                description={activeTask.description}
-                                activeTask={true}/>
-                            :
-                            <div/>
-                        }
+                            <ActiveTask
+                                task={findActiveTask()}
+                                refetch={() => {refetch(!fetch)}}
+                            />:
+                        <></>}
                     </Container>
                 </Col>
             </Row>

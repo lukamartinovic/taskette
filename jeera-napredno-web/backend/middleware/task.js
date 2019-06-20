@@ -76,3 +76,22 @@ module.exports.editTask = async function editTask(req, res, next){
     }
 
 };
+
+module.exports.changeTaskStatus = async function editTask(req, res, next){
+    const Task = mongoose.model('Task', taskSchema);
+
+    try {
+        const task = await Task.findById(req.body.id);
+        if(!task)
+            return res.status(404).end();
+
+        task.status = req.body.status.toUpperCase();
+
+        await task.save();
+        res.send(task);
+    }
+    catch(err){
+        return next(err);
+    }
+
+};
