@@ -17,8 +17,8 @@ function Task(props){
     }
 
     return(
-                <Card bg="light"
-                      style={{ marginBottom: "0.5em" }}
+                <Card  bg="light"
+                      style={{ marginBottom: "0.5em", cursor:"pointer"}}
                       onClick={() => {props.activateTask(props.task._id)}}
 
                       >
@@ -29,6 +29,7 @@ function Task(props){
                         </Card.Text>
                     </Card.Body>
                 </Card>
+
 
     )
 };

@@ -21,8 +21,9 @@ const TaskSchema = new Schema({
     },
     status: {
         type: String,
+        uppercase: true,
         enum: ["TO DO", "IN PROGRESS", "DONE"],
-        default: "To Do"
+        default: "TO DO"
     },
     points: {
         type: Number,

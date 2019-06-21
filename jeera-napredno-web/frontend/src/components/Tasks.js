@@ -33,7 +33,6 @@ function Tasks(props){
     }
 
     return(
-
         <Container>
             <Row>
                 <Col md={4}>

@@ -10,8 +10,10 @@ module.exports.addUser = async function (req, res, next) {
     const newUser =
         {
             email: req.body.email,
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
             password: req.body.password,
-            role: req.body.role.toUpperCase(),
+            role: req.body.role,
             level: req.body.level
         };
 

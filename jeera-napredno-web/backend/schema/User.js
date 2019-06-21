@@ -30,6 +30,16 @@ const UserSchema = new Schema({
         required: true,
         match : [validEmail, 'E-mail is invalid']
     },
+    firstName:{
+        type: String,
+        required: true,
+        maximum: 20
+    },
+    lastName:{
+        type: String,
+        required: true,
+        maximum: 20
+    },
     password: {
         type: String,
         required: true,
@@ -40,6 +50,7 @@ const UserSchema = new Schema({
     },
     role: {
         type: String,
+        uppercase: true,
         required: 'User must have a valid role',
         enum: ['EMPLOYEE', 'MANAGER', 'ADMIN'],
     },
@@ -51,6 +62,10 @@ const UserSchema = new Schema({
         type: Number,
         default: null,
         validate: [validateLevel, "Invalid user level value"]
+    },
+    created: {
+        type: Date,
+        default: Date.now
     }
 });
 

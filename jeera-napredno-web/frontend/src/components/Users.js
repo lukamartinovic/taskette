@@ -51,7 +51,7 @@ function Users(props){
         let userList = [];
         userList = search === "" ? users : userSearch(search);
         return(
-            userList.map(
+            userList.slice(0,5).map(
             user => {
                 return user._id === activeUser ?
                     <User active setActiveUser={setActiveUser} user={user} key={user._id}/>
@@ -82,6 +82,7 @@ function Users(props){
                         Add user
                     </ListGroup.Item>
                 {returnUsers()}
+                {users.length > 5 && !search ? <ListGroup.Item>...</ListGroup.Item> : <></>}
             </Card.Body>
         </Card>
     }
@@ -91,10 +92,10 @@ function Users(props){
             <AddUser show={addUser} handleClose={handleCloseAddUser}/>
             <Container>
             <Row>
-                <Col md={4}>
+                <Col md={5}>
                     {UsersPanel()}
                 </Col>
-                <Col md={8}>
+                <Col md={5}>
                     {activeUser ?
                         <ActiveUser user={returnActiveUser()}/>
                         :
