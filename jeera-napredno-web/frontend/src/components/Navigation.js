@@ -7,7 +7,7 @@ function Navigation(props){
     const context = useContext(AuthContext);
 
     return(
-        <Navbar bg="light" variant="light">
+        <Navbar bg="dark" variant="dark">
             <Navbar.Brand>Jeera</Navbar.Brand>
             <Nav className="mr-auto">
                 <LinkContainer to={"/"}>
@@ -17,9 +17,17 @@ function Navigation(props){
                     <Nav.Link>Tasks</Nav.Link>
                 </LinkContainer>
                 {context.authentication.role === "ADMIN" ?
+                    <>
                     <LinkContainer to={"/users"}>
                         <Nav.Link>Users</Nav.Link>
-                    </LinkContainer>:
+                    </LinkContainer>
+                    <LinkContainer to={"/projects"}>
+                        <Nav.Link>Projects</Nav.Link>
+                    </LinkContainer>
+                    <LinkContainer to={"/sprints"}>
+                    <Nav.Link>Sprints</Nav.Link>
+                    </LinkContainer>
+                    </>:
                     <></>
                 }
             </Nav>

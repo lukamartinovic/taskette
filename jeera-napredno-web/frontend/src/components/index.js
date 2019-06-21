@@ -6,3 +6,5 @@ export { default as Task } from './Task';
 export { default as Tasks } from './Tasks';
 export { default as Users } from './Users';
 export { default as User } from './User';
+export { default as ActiveUser } from './ActiveUser';
+export { default as AddUser } from './AddUser';
