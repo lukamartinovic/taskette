@@ -11,8 +11,8 @@ function ActiveUser(props){
             </Card.Header>
             <Card.Body>
                 <Card.Text align="left">
-                    Role: {props.user.role.charAt(0).toUpperCase() + props.user.role.substring(1).toLowerCase()}<br/>
                     Full name: {`${props.user.firstName} ${props.user.lastName}`}<br/>
+                    Role: {props.user.role.charAt(0).toUpperCase() + props.user.role.substring(1).toLowerCase()}<br/>
                     Created on: {moment(props.user.created).format('DD.MM.YYYY HH:mm:ss')}
                 </Card.Text>
 

@@ -1,7 +1,7 @@
 import React, {useContext, useState} from 'react';
 import {Redirect} from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
-import {Form, Button, Card, Container} from 'react-bootstrap';
+import {Form, Button, Card, Container, Alert} from 'react-bootstrap';
 import api from '../api/api';
 
 function SignIn(props){
@@ -17,7 +17,8 @@ function SignIn(props){
         api.login(
             authState.email,
             authState.password,
-            (res) => {context.authenticate(true, res.data.token, res.data.email, res.data.level, res.data._id, res.data.role)}
+            (res) => {context.authenticate(true, res.data.token, res.data.email, res.data.level, res.data._id, res.data.role)},
+            (err) => {setAuth({...authState, error:true})}
         );
     };
     if(!context.loggedIn)
@@ -34,8 +35,14 @@ function SignIn(props){
                     <Form.Label >Password</Form.Label>
                     <Form.Control onChange={handleInput} id="password" type="password" placeholder="Password" />
                 </Form.Group>
-                <Button onClick={handleLogin} variant="primary">
-                    Submit
+                {authState.error ?
+                    <Alert variant="danger">
+                    Incorrect email or password
+                    </Alert>
+                    :
+                    <></>}
+                <Button block onClick={handleLogin} variant="primary">
+                    Sign in
                 </Button>
             </Form>
         </Card>

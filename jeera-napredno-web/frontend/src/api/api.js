@@ -4,10 +4,10 @@ import axios from "axios";
 
 const api = {
     getUserId(email){},
-    login(email, password, callback){
+    login(email, password, callback, errorCallback){
         axios.post(endpoints.login, {email: email, password: password})
             .then((res) => callback(res))
-            .catch((err) => {console.log(err)})
+            .catch((err) => errorCallback(err))
     },
     async getTasks(_id, token, callback){
         axios.post(endpoints.getTasks, {user: _id, token: token})

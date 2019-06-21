@@ -3,7 +3,7 @@ import {Task, ActiveTask}from "./";
 import {Col, Row, Container} from "react-bootstrap";
 import AuthContext from "../context/AuthContext";
 import api from "../api/api";
-
+import {Route} from 'react-router-dom'
 
 function Tasks(props){
 
@@ -29,7 +29,8 @@ function Tasks(props){
     }
 
     function activateTask(task_id){
-        setActiveTask(task_id)
+        setActiveTask(task_id);
+        props.history.push(`/tasks/${task_id}`)
     }
 
     return(
@@ -45,10 +46,15 @@ function Tasks(props){
                 <Col md={8}>
                     <Container>
                         {activeTask ?
-                            <ActiveTask
+                            <Route path={`/tasks/${findActiveTask()._id}`}
+                            render={() =>
+                                <ActiveTask
                                 task={findActiveTask()}
                                 refetch={() => {refetch(!fetch)}}
-                            />:
+                                />
+                            }
+                            />
+                            :
                         <></>}
                     </Container>
                 </Col>
