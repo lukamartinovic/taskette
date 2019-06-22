@@ -2,8 +2,8 @@ import React, {useContext, useState, useEffect} from 'react';
 import Container from "react-bootstrap/Container";
 import api from '../api/api';
 import AuthContext from '../context/AuthContext';
-import {Col, Row, Card, FormControl, Button, Form, InputGroup, ListGroup} from "react-bootstrap";
-import {User, ActiveUser, AddUser} from './'
+import {Col, Row, Card, Table, FormControl, Button, Form, InputGroup, ListGroup} from "react-bootstrap";
+import {User, ActiveUser, AddUser, UserTable} from './'
 import Fuse from 'fuse.js';
 
 function Users(props){
@@ -18,7 +18,9 @@ function Users(props){
         ()=>{
             api.getUsers(context.authentication.token,
                 (res) => {
-                    setUsers(res.data)
+                    let fetchedUsers = res.data;
+                    fetchedUsers.forEach((user, index) => user.index = index);
+                    setUsers(fetchedUsers)
                 })
         }, []
     );
@@ -50,14 +52,7 @@ function Users(props){
     function returnUsers() {
         let userList = [];
         userList = search === "" ? users : userSearch(search);
-        return(
-            userList.slice(0,5).map(
-            user => {
-                return user._id === activeUser ?
-                    <User active setActiveUser={setActiveUser} user={user} key={user._id}/>
-                    :
-                    <User setActiveUser={setActiveUser} user={user} key={user._id}/>})
-        )
+        return userList
     }
 
     function UsersPanel(){
@@ -73,17 +68,13 @@ function Users(props){
                             placeholder="Email"
                             onChange={(e) => {setSearch(e.target.value)}}
                         />
-
+                        <InputGroup.Append>
+                            <InputGroup.Text style={{cursor:"pointer"}} onClick={()=>{setAddUser(true)}}>Add user</InputGroup.Text>
+                        </InputGroup.Append>
                     </InputGroup>
                 </Form>
             </Card.Header>
-            <Card.Body>
-                    <ListGroup.Item style={{backgroundColor:"#f7f7f7"}} action onClick={()=>{setAddUser(true)}}>
-                        Add user
-                    </ListGroup.Item>
-                {returnUsers()}
-                {users.length > 5 && !search ? <ListGroup.Item>...</ListGroup.Item> : <></>}
-            </Card.Body>
+            <UserTable users={returnUsers()}/>
         </Card>
     }
 
@@ -91,17 +82,7 @@ function Users(props){
         <>
             <AddUser show={addUser} handleClose={handleCloseAddUser}/>
             <Container>
-            <Row>
-                <Col md={5}>
                     {UsersPanel()}
-                </Col>
-                <Col md={5}>
-                    {activeUser ?
-                        <ActiveUser user={returnActiveUser()}/>
-                        :
-                        <></>}
-                </Col>
-            </Row>
         </Container>
         </>
 

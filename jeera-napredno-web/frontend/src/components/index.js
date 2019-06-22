@@ -8,3 +8,4 @@ export { default as Users } from './Users';
 export { default as User } from './User';
 export { default as ActiveUser } from './ActiveUser';
 export { default as AddUser } from './AddUser';
+export { default as UserTable } from './UserTable';
