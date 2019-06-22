@@ -27,12 +27,12 @@ function SignIn(props){
         <Card style={{padding:"1em"}}>
             <Form>
                 <Form.Group>
-                    <Form.Label>Email address</Form.Label>
+                    <Form.Label>Email</Form.Label>
                     <Form.Control onChange={handleInput} id="email" type="email" placeholder="Enter email" />
                 </Form.Group>
 
                 <Form.Group>
-                    <Form.Label >Password</Form.Label>
+                    <Form.Label>Password</Form.Label>
                     <Form.Control onChange={handleInput} id="password" type="password" placeholder="Password" />
                 </Form.Group>
                 {authState.error ?

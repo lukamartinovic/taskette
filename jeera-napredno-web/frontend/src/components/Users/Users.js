@@ -1,10 +1,11 @@
 import React, {useContext, useState, useEffect} from 'react';
 import Container from "react-bootstrap/Container";
-import api from '../api/api';
-import AuthContext from '../context/AuthContext';
-import {Col, Row, Card, Table, FormControl, Button, Form, InputGroup, ListGroup} from "react-bootstrap";
-import {User, ActiveUser, AddUser, UserTable} from './'
+import api from '../../api/api';
+import AuthContext from '../../context/AuthContext';
+import {Col, Row, Card, Table, FormControl, Button, Form, InputGroup, ListGroup, Pagination} from "react-bootstrap";
+import {User, ActiveUser, AddUser, UserTable} from '../index'
 import Fuse from 'fuse.js';
+import {Route} from "react-router-dom";
 
 function Users(props){
 
@@ -12,7 +13,6 @@ function Users(props){
     const [users, setUsers] = useState([]);
     const [search, setSearch] = useState ("");
     const [activeUser, setActiveUserState] = useState(false);
-    const [addUser, setAddUser] = useState(false);
 
     useEffect(
         ()=>{
@@ -24,15 +24,6 @@ function Users(props){
                 })
         }, []
     );
-
-    function handleShowAddUser(){
-        setAddUser(true);
-    }
-
-    function handleCloseAddUser(){
-        setAddUser(false);
-    }
-
 
     function setActiveUser(_id){
         setActiveUserState(_id)
@@ -56,7 +47,7 @@ function Users(props){
     }
 
     function UsersPanel(){
-        return <Card>
+        return <Card className="text-center">
             <Card.Header>
                 <Form inline>
                     <InputGroup style={{width:"100%"}}>
@@ -69,22 +60,25 @@ function Users(props){
                             onChange={(e) => {setSearch(e.target.value)}}
                         />
                         <InputGroup.Append>
-                            <InputGroup.Text style={{cursor:"pointer"}} onClick={()=>{setAddUser(true)}}>Add user</InputGroup.Text>
+                            <InputGroup.Text style={{cursor:"pointer"}} onClick={()=>{props.history.push("/users/createUser")}}>Add user</InputGroup.Text>
                         </InputGroup.Append>
                     </InputGroup>
                 </Form>
             </Card.Header>
             <UserTable users={returnUsers()}/>
+            <Card.Footer>
+
+            </Card.Footer>
         </Card>
     }
 
     return(
         <>
-            <AddUser show={addUser} handleClose={handleCloseAddUser}/>
+            <Route path="/users/createUser" component={AddUser}/>
             <Container>
                     {UsersPanel()}
-        </Container>
-        </>
+            </Container>
+            </>
 
     )
 }

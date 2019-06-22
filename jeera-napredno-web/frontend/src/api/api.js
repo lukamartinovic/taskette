@@ -3,13 +3,14 @@ import axios from "axios";
 
 
 const api = {
+    passwordStrength: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,20}$/,
     getUserId(email){},
     login(email, password, callback, errorCallback){
         axios.post(endpoints.login, {email: email, password: password})
             .then((res) => callback(res))
             .catch((err) => errorCallback(err))
     },
-    async getTasks(_id, token, callback){
+    getTasks(_id, token, callback){
         axios.post(endpoints.getTasks, {user: _id, token: token})
             .then((res) => callback(res))
             .catch((err) => {console.log(err)})
@@ -23,7 +24,14 @@ const api = {
         axios.post(endpoints.getUsers, {token:token})
             .then((res) => callback(res))
             .catch((err) => console.log(err))
+    },
+    addUser(email, firstName, lastName, password, role, token, callback, errCallback){
+        axios.post(endpoints.addUser,
+            {email: email, firstName: firstName, lastName: lastName, password: password, token: token, role:role})
+            .then((res) => callback(res))
+            .catch((err) => errCallback(err.response.data))
     }
+
 };
 
 export default api;

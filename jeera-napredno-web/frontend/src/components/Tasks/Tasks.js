@@ -1,8 +1,8 @@
 import React, {useContext, useState, useEffect} from 'react';
-import {Task, ActiveTask}from "./";
+import {Task, ActiveTask}from "../index";
 import {Col, Row, Container, Alert} from "react-bootstrap";
-import AuthContext from "../context/AuthContext";
-import api from "../api/api";
+import AuthContext from "../../context/AuthContext";
+import api from "../../api/api";
 import {Route} from 'react-router-dom'
 
 function Tasks(props){
