@@ -2,68 +2,44 @@ import React, {useState, useContext} from 'react';
 import {Modal, Button, Form, Row, Col} from "react-bootstrap";
 import api from '../../api/api';
 import AuthContext from '../../context/AuthContext';
+import {withFormik} from 'formik';
+import * as Yup from 'yup';
 
-function AddUser(props){
 
-    const defaultUserInput = {firstName: "", lastName: "", email: "", password: "", level: 1, role:"EMPLOYEE"};
-    const [userInput, setUserInput] = useState(defaultUserInput);
-    const [validated, setValidate] = useState(false);
-    const [validationErrors, setValidationErrors] = useState({});
 
-    const authContext = useContext(AuthContext);
+const validationSchema = Yup.object().shape({
+    email: Yup.string().email("Must be a valid email").required("Email is required"),
+    firstName: Yup.string().max(15, "Cannot be longer than 15 characters").required("First name is required"),
+    lastName: Yup.string().max(20, "Cannot be longer than 20 characters").required("Last name is required"),
+    password: Yup.string().matches(api.passwordStrength, {message: "Password must contain at least 8 characters and one number", excludeEmptyString:true}).required("Password is required"),
+    role: Yup.string().required(),
+    level: Yup.number().required("Level is required")
+});
 
-    function handleChange(e){
-        setUserInput({...userInput, [e.target.id]:e.target.value})
-    }
+function handleSubmit(values, {resetForm, setErrors, setSubmitting}){
+    console.log(values)}
 
-    function handleSubmit(e){
-        e.preventDefault();
-        e.stopPropagation();
-        e.persist()
 
-        function callback(res){
-            setValidationErrors({});
-            setValidate(false);
-            setUserInput(defaultUserInput)
-            console.log(res)
+const FormikForm = withFormik({
+    mapPropsToValues(){
+        return{
+            email: "",
+            firstName: "",
+            lastName: "",
+            password: "",
+            role: "EMPLOYEE",
+            level: 1
         }
-
-        function errCallback(err){
-            let errors = {};
-            console.log(err)
-            if((err.errors !== undefined)&& err.errors.password.name  === "ValidatorError")
-                errors.password = "Password does not meet requirements";
-            if(err.code === 11000)
-                errors.email = "User with this email already exists";
-            setValidationErrors(errors);
-        }
-
-        api.addUser(
-            userInput.email,
-            userInput.firstName,
-            userInput.lastName,
-            userInput.password,
-            userInput.role,
-            authContext.authentication.token,
-            callback,
-            errCallback)
-
-        setValidate(true);
+    },
+    handleSubmit,
+    validationSchema
+})(AddUser);
 
 
-    }
-
-    function renderAuthorizationLevel(){
-        return(
-            userInput.role === "MANAGER" ?
-                <Form.Group required controlId="level" onChange={handleChange}>
-                    <Form.Label>Level</Form.Label>
-                    <input value={userInput.level} className="form-control" type="number" defaultValue="1" id="level"/>
-                </Form.Group>
-            :
-            <></>
-        )
-    }
+function AddUser({values, errors, handleChange, handleSubmit, validationSchema, touched, ...props}){
+    function errorString(error){
+        return(error.substr(error.indexOf(" ") + 1));
+    };
 
     return(
         <Modal onHide={()=>{props.history.push('/users/')}} show>
@@ -71,40 +47,44 @@ function AddUser(props){
                 <Modal.Title>Create user</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <Form onSubmit={handleSubmit} noValidate validated={validated}>
+                <Form noValidate onSubmit={handleSubmit}>
                     <Form.Row>
-                        <Form.Group  as={Col} controlId="firstName" onChange={handleChange}>
+                        <Form.Group controlId="firstName">
                             <Form.Label>First name</Form.Label>
-                            <Form.Control value={userInput.firstName} required type="text" placeholder="First name" />
+                            <Form.Control value={values.firstName} onChange={handleChange} type="text" placeholder="First name" />
+                            {touched.firstName && errors.firstName && <Form.Text className="text-danger">{errors.firstName}</Form.Text>}
                         </Form.Group>
-
-                        <Form.Group as={Col} controlId="lastName" onChange={handleChange}>
+                        <Form.Group as={Col} controlId="lastName">
                             <Form.Label>Last name</Form.Label>
-                            <Form.Control value={userInput.lastName} required type="text" placeholder="Last name" />
+                            <Form.Control value={values.lastName} onChange={handleChange} type="text" placeholder="Last name" />
+                            {touched.lastName && errors.lastName && <Form.Text className="text-danger">{errors.lastName}</Form.Text>}
                         </Form.Group>
                     </Form.Row>
-                    <Form.Group controlId="email" onChange={handleChange}>
+                    <Form.Group controlId="email">
                         <Form.Label>Email</Form.Label>
-                        <Form.Control value={userInput.email} isInvalid={!!validationErrors.email} required type="email" placeholder="Enter email"/>
-                        <Form.Control.Feedback type="invalid">{validationErrors.email}</Form.Control.Feedback>
+                        <Form.Control value={values.email} onChange={handleChange} type="email" placeholder="Enter email"/>
+                        {touched.email && errors.email && <Form.Text className="text-danger">{errors.email}</Form.Text>}
                     </Form.Group>
-                    <Form.Group controlId="password" onChange={handleChange}>
+                    <Form.Group controlId="password">
                         <Form.Label>Password</Form.Label>
-                        <Form.Control value={userInput.password} isInvalid={!!validationErrors.password} required placeholder="Password"/>
-                        <Form.Control.Feedback type="invalid">{validationErrors.password}</Form.Control.Feedback>
-                        <Form.Text className="text-muted">
-                            Must contain at least 8 letters and 1 number
-                        </Form.Text>
+                        <Form.Control value={values.password} onChange={handleChange} placeholder="Password"/>
+                        {touched.password && errors.password && <Form.Text className="text-danger">{errors.password}</Form.Text>}
                     </Form.Group>
-                    <Form.Group controlId="role" onChange={handleChange}>
+                    <Form.Group controlId="role">
                         <Form.Label>Role</Form.Label>
-                        <Form.Control required value={userInput.role}  defaultValue="EMPLOYEE" as="select" >
+                        <Form.Control value={values.role} onChange={handleChange} as="select" >
                             <option value="EMPLOYEE">Employee</option>
                             <option value="MANAGER">Manager</option>
                             <option value="ADMIN">Administrator</option>
                         </Form.Control>
+                        {touched.role && errors.role && <Form.Text className="text-danger">{errors.role}</Form.Text>}
                     </Form.Group>
-                    {renderAuthorizationLevel()}
+                    {values.role === "MANAGER" &&
+                        <Form.Group controlId="level">
+                            <Form.Label>Level</Form.Label>
+                            <input value={values.level} onChange={handleChange} className="form-control" type="number" name="level"/>
+                            {touched.level && errors.level && <Form.Text className="text-danger">{errors.level}</Form.Text>}
+                        </Form.Group>}
                     <Button variant="primary" type="submit">
                         Submit
                     </Button>
@@ -114,4 +94,4 @@ function AddUser(props){
 }
 
 
-export default AddUser;
+export default FormikForm;

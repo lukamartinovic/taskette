@@ -9,14 +9,14 @@ import {Route} from "react-router-dom";
 
 function Users(props){
 
-    const context = useContext(AuthContext);
+    const authContext = useContext(AuthContext);
     const [users, setUsers] = useState([]);
     const [search, setSearch] = useState ("");
     const [activeUser, setActiveUserState] = useState(false);
 
     useEffect(
         ()=>{
-            api.getUsers(context.authentication.token,
+            api.getUsers(authContext.authentication.token,
                 (res) => {
                     let fetchedUsers = res.data;
                     fetchedUsers.forEach((user, index) => user.index = index);
@@ -74,7 +74,7 @@ function Users(props){
 
     return(
         <>
-            <Route path="/users/createUser" component={AddUser}/>
+            <Route path="/users/createUser" render={(props)=>{return <AddUser {...props} authContext={authContext}/>}}/>
             <Container>
                     {UsersPanel()}
             </Container>
