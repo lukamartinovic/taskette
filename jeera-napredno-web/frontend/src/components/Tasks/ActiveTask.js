@@ -2,14 +2,13 @@ import {Card, Form} from "react-bootstrap";
 import React, {useContext} from "react";
 import api from "../../api/api";
 import AuthContext from "../../context/AuthContext";
-import {Router} from 'react-router-dom';
 
 function ActiveTask(props){
     const authContext = useContext(AuthContext);
 
     function handleStatusUpdate(e){
         api.changeTaskStatus(props.task._id, e.target.value, authContext.authentication.token,
-            (res) =>{
+            () =>{
                 props.refetch();
             })
     }

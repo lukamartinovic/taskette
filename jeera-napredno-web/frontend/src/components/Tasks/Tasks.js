@@ -1,6 +1,6 @@
-import React, {useContext, useState, useEffect} from 'react';
-import {Task, ActiveTask}from "../index";
-import {Col, Row, Container, Alert} from "react-bootstrap";
+import React, {useContext, useEffect, useState} from 'react';
+import {ActiveTask, Task} from "../index";
+import {Alert, Col, Container, Row} from "react-bootstrap";
 import AuthContext from "../../context/AuthContext";
 import api from "../../api/api";
 import {Route} from 'react-router-dom'

@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {Table, Pagination} from "react-bootstrap";
+import React from 'react';
+import {Table} from "react-bootstrap";
 
 function UserTable(props){
     return(
@@ -16,7 +16,7 @@ function UserTable(props){
             </thead>
             <tbody>
             {props.users.map(
-                (user, index) => {
+                (user) => {
                     return(
                         <tr key={user.index}>
                             <td>{user.index}</td>
