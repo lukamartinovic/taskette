@@ -1,11 +1,10 @@
-import React, {useState, useContext} from 'react';
-import {Modal, Button, Form, Row, Col} from "react-bootstrap";
+import React, {useEffect, useState} from 'react';
+import {Alert, Button, Col, Form, InputGroup, Modal} from "react-bootstrap";
 import api from '../../api/api';
-import AuthContext from '../../context/AuthContext';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faEye, faEyeSlash} from '@fortawesome/free-solid-svg-icons';
 import {withFormik} from 'formik';
 import * as Yup from 'yup';
-
-
 
 const validationSchema = Yup.object().shape({
     email: Yup.string().email("Must be a valid email").required("Email is required"),
@@ -16,8 +15,21 @@ const validationSchema = Yup.object().shape({
     level: Yup.number().required("Level is required")
 });
 
-function handleSubmit(values, {resetForm, setErrors, setSubmitting}){
-    console.log(values)}
+function handleSubmit(values, {resetForm, setErrors, setSubmitting, props, setStatus}){
+    const token = props.authContext.authentication.token;
+    function callback(res){
+        console.log(res);
+        resetForm();
+        setStatus({success:true});
+        setSubmitting(false);
+    }
+    function errorCallback(err){
+        if(err.code === 11000)
+            setErrors({email: "That email is already taken"});
+        setSubmitting(false);
+    }
+    api.addUser(values.email, values.firstName, values.lastName, values.password, values.role, token, callback, errorCallback)
+}
 
 
 const FormikForm = withFormik({
@@ -31,16 +43,19 @@ const FormikForm = withFormik({
             level: 1
         }
     },
+    mapPropsToStatus(){
+        return{
+            success: false
+        }
+    },
     handleSubmit,
     validationSchema
 })(AddUser);
 
 
-function AddUser({values, errors, handleChange, handleSubmit, validationSchema, touched, ...props}){
-    function errorString(error){
-        return(error.substr(error.indexOf(" ") + 1));
-    };
-
+function AddUser({values, errors, handleChange, handleSubmit, validationSchema, touched, isSubmitting, status, setStatus, ...props}){
+    useEffect(() => {setStatus({success:false})}, [values, touched, setStatus]);
+    const [hidePassword, setHidePassword] = useState(false)
     return(
         <Modal onHide={()=>{props.history.push('/users/')}} show>
             <Modal.Header closeButton>
@@ -49,7 +64,7 @@ function AddUser({values, errors, handleChange, handleSubmit, validationSchema, 
             <Modal.Body>
                 <Form noValidate onSubmit={handleSubmit}>
                     <Form.Row>
-                        <Form.Group controlId="firstName">
+                        <Form.Group as={Col} controlId="firstName">
                             <Form.Label>First name</Form.Label>
                             <Form.Control value={values.firstName} onChange={handleChange} type="text" placeholder="First name" />
                             {touched.firstName && errors.firstName && <Form.Text className="text-danger">{errors.firstName}</Form.Text>}
@@ -67,16 +82,23 @@ function AddUser({values, errors, handleChange, handleSubmit, validationSchema, 
                     </Form.Group>
                     <Form.Group controlId="password">
                         <Form.Label>Password</Form.Label>
-                        <Form.Control value={values.password} onChange={handleChange} placeholder="Password"/>
+                        <InputGroup>
+                        <Form.Control type={hidePassword ? "password" : "text"} value={values.password} onChange={handleChange} placeholder="Password"/>
+                            <InputGroup.Append>
+                                <InputGroup.Text style={{cursor:"pointer"}} onClick={()=>{setHidePassword(!hidePassword)}}>
+                                    <FontAwesomeIcon style={{width: "1em"}} icon={hidePassword ? faEyeSlash : faEye} />
+                                </InputGroup.Text>
+                            </InputGroup.Append>
+                        </InputGroup>
                         {touched.password && errors.password && <Form.Text className="text-danger">{errors.password}</Form.Text>}
                     </Form.Group>
                     <Form.Group controlId="role">
                         <Form.Label>Role</Form.Label>
-                        <Form.Control value={values.role} onChange={handleChange} as="select" >
-                            <option value="EMPLOYEE">Employee</option>
-                            <option value="MANAGER">Manager</option>
-                            <option value="ADMIN">Administrator</option>
-                        </Form.Control>
+                            <Form.Control value={values.role} onChange={handleChange} as="select" >
+                                <option value="EMPLOYEE">Employee</option>
+                                <option value="MANAGER">Manager</option>
+                                <option value="ADMIN">Administrator</option>
+                            </Form.Control>
                         {touched.role && errors.role && <Form.Text className="text-danger">{errors.role}</Form.Text>}
                     </Form.Group>
                     {values.role === "MANAGER" &&
@@ -85,9 +107,11 @@ function AddUser({values, errors, handleChange, handleSubmit, validationSchema, 
                             <input value={values.level} onChange={handleChange} className="form-control" type="number" name="level"/>
                             {touched.level && errors.level && <Form.Text className="text-danger">{errors.level}</Form.Text>}
                         </Form.Group>}
-                    <Button variant="primary" type="submit">
+                    {status.success ?
+                        <Alert variant="success">User successfully created!</Alert>:
+                        <Button block disabled={isSubmitting} variant="primary" type="submit">
                         Submit
-                    </Button>
+                    </Button>}
                 </Form>
             </Modal.Body>
         </Modal>)

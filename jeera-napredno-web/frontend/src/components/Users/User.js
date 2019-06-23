@@ -1,6 +1,5 @@
 import React from 'react';
-import {Card, ListGroup} from "react-bootstrap";
-
+import {ListGroup} from "react-bootstrap";
 
 
 function User(props){
@@ -10,6 +9,6 @@ function User(props){
             {(props.user.email)}
         </ListGroup.Item>
     )
-};
+}
 
 export default User;

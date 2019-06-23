@@ -3,19 +3,6 @@ import {Card} from "react-bootstrap";
 
 
 function Task(props){
-    function borderColor(status){
-        switch(status){
-            case "DONE":
-                return "border-success";
-            case "TO DO":
-                return "border-info";
-            case "IN PROGRESS":
-                return "border-primary";
-            default:
-                return ""
-        }
-    }
-
     return(
                 <Card  bg="light"
                       style={{ marginBottom: "0.5em", cursor:"pointer"}}
@@ -32,6 +19,6 @@ function Task(props){
 
 
     )
-};
+}
 
 export default Task;

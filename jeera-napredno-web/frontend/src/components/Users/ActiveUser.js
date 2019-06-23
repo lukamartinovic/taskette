@@ -1,5 +1,5 @@
 import React from 'react';
-import {Card, ListGroup} from "react-bootstrap";
+import {Card} from "react-bootstrap";
 import moment from 'moment';
 
 function ActiveUser(props){
@@ -19,6 +19,6 @@ function ActiveUser(props){
             </Card.Body>
         </Card>
     )
-};
+}
 
 export default ActiveUser;
