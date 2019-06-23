@@ -55,7 +55,9 @@ const FormikForm = withFormik({
 
 function AddUser({values, errors, handleChange, handleSubmit, validationSchema, touched, isSubmitting, status, setStatus, ...props}){
     useEffect(() => {setStatus({success:false})}, [values, touched, setStatus]);
-    const [hidePassword, setHidePassword] = useState(false)
+    const [hidePassword, setHidePassword] = useState(false);
+    const {lastName, role, password, email, firstName, level} = values;
+
     return(
         <Modal onHide={()=>{props.history.push('/users/')}} show>
             <Modal.Header closeButton>
@@ -66,24 +68,24 @@ function AddUser({values, errors, handleChange, handleSubmit, validationSchema, 
                     <Form.Row>
                         <Form.Group as={Col} controlId="firstName">
                             <Form.Label>First name</Form.Label>
-                            <Form.Control value={values.firstName} onChange={handleChange} type="text" placeholder="First name" />
+                            <Form.Control value={firstName} onChange={handleChange} type="text" placeholder="First name" />
                             {touched.firstName && errors.firstName && <Form.Text className="text-danger">{errors.firstName}</Form.Text>}
                         </Form.Group>
                         <Form.Group as={Col} controlId="lastName">
                             <Form.Label>Last name</Form.Label>
-                            <Form.Control value={values.lastName} onChange={handleChange} type="text" placeholder="Last name" />
+                            <Form.Control value={lastName} onChange={handleChange} type="text" placeholder="Last name" />
                             {touched.lastName && errors.lastName && <Form.Text className="text-danger">{errors.lastName}</Form.Text>}
                         </Form.Group>
                     </Form.Row>
                     <Form.Group controlId="email">
                         <Form.Label>Email</Form.Label>
-                        <Form.Control value={values.email} onChange={handleChange} type="email" placeholder="Enter email"/>
+                        <Form.Control value={email} onChange={handleChange} type="email" placeholder="Enter email"/>
                         {touched.email && errors.email && <Form.Text className="text-danger">{errors.email}</Form.Text>}
                     </Form.Group>
                     <Form.Group controlId="password">
                         <Form.Label>Password</Form.Label>
                         <InputGroup>
-                        <Form.Control type={hidePassword ? "password" : "text"} value={values.password} onChange={handleChange} placeholder="Password"/>
+                        <Form.Control type={hidePassword ? "password" : "text"} value={password} onChange={handleChange} placeholder="Password"/>
                             <InputGroup.Append>
                                 <InputGroup.Text style={{cursor:"pointer"}} onClick={()=>{setHidePassword(!hidePassword)}}>
                                     <FontAwesomeIcon style={{width: "1em"}} icon={hidePassword ? faEyeSlash : faEye} />
@@ -94,17 +96,17 @@ function AddUser({values, errors, handleChange, handleSubmit, validationSchema, 
                     </Form.Group>
                     <Form.Group controlId="role">
                         <Form.Label>Role</Form.Label>
-                            <Form.Control value={values.role} onChange={handleChange} as="select" >
+                            <Form.Control value={role} onChange={handleChange} as="select" >
                                 <option value="EMPLOYEE">Employee</option>
                                 <option value="MANAGER">Manager</option>
                                 <option value="ADMIN">Administrator</option>
                             </Form.Control>
                         {touched.role && errors.role && <Form.Text className="text-danger">{errors.role}</Form.Text>}
                     </Form.Group>
-                    {values.role === "MANAGER" &&
+                    {role === "MANAGER" &&
                         <Form.Group controlId="level">
                             <Form.Label>Level</Form.Label>
-                            <input value={values.level} onChange={handleChange} className="form-control" type="number" name="level"/>
+                            <input value={level} onChange={handleChange} className="form-control" type="number" name="level"/>
                             {touched.level && errors.level && <Form.Text className="text-danger">{errors.level}</Form.Text>}
                         </Form.Group>}
                     {status.success ?

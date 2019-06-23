@@ -20,10 +20,10 @@ const api = {
             .then((res) => callback(res))
             .catch((err) => {console.log(err)})
     },
-    getUsers(token, callback){
-        axios.post(endpoints.getUsers, {token:token})
+    getUsers(token, pageSize, page, callback, errorCallback){
+        axios.post(endpoints.getUsers, {token:token, pageSize: pageSize, page:page})
             .then((res) => callback(res))
-            .catch((err) => console.log(err))
+            .catch((err) => errorCallback(err))
     },
     addUser(email, firstName, lastName, password, role, token, callback, errCallback){
         axios.post(endpoints.addUser,

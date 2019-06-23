@@ -13,13 +13,14 @@ function Tasks(props){
     const [fetch, refetch] = useState(false);
 
     useEffect(() => {
-        console.log(fetch);
+        let didCancel = false;
         api.getTasks(
             authContext.authentication._id,
             authContext.authentication.token,
             (res) =>{
-                setTasks(res.data);
+                !didCancel && setTasks(res.data);
             })
+        return () => {didCancel = true}
     }, [fetch, activeTask, authContext.authentication.token, authContext.authentication._id]);
 
     function findActiveTask(){

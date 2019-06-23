@@ -4,30 +4,32 @@ import {Table} from "react-bootstrap";
 function UserTable(props){
     return(
         <>
-            <Table size="sm" striped hover borderless>
-            <thead>
-            <tr>
-                <th>#</th>
-                <th>Email</th>
-                <th>First name</th>
-                <th>Last name</th>
-                <th>Role</th>
-            </tr>
-            </thead>
-            <tbody>
-            {props.users.map(
-                (user) => {
-                    return(
-                        <tr key={user.index}>
-                            <td>{user.index}</td>
-                            <td>{user.email}</td>
-                            <td>{user.firstName}</td>
-                            <td>{user.lastName}</td>
-                            <td>{user.role.substr(0, 1) + user.role.substr(1).toLowerCase()}</td>
-                        </tr>
-                    )})}
-            </tbody>
-        </Table>
+            <Table responsive="md" size="sm"  striped hover borderless>
+                <thead>
+                <tr>
+                    <th className="text-center">#</th>
+                    <th className="text-left">Email</th>
+                    <th className="text-left">First name</th>
+                    <th className="text-left">Last name</th>
+                    <th className="text-left">Role</th>
+                </tr>
+                </thead>
+                <tbody className="text-left">
+                {props.users.map(
+                    (user) => {
+                        const {lastName, role, index, email, firstName} = user;
+                        return (
+                            <tr key={index}>
+                                <td style={{width:"2%"}} className="text-center" >{index}.</td>
+                                <td style={{width:"30%"}} >{email}</td>
+                                <td style={{width:"20%"}} >{firstName}</td>
+                                <td style={{width:"25%"}} >{lastName}</td>
+                                <td style={{width:"20%"}} >{role.substr(0, 1) + role.substr(1).toLowerCase()}</td>
+                            </tr>
+                        )
+                    })}
+                </tbody>
+            </Table>
         </>
 
 

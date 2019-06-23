@@ -1,12 +1,13 @@
 import React, {useContext, useState} from 'react';
 import {Redirect} from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
-import {Form, Button, Card, Container, Alert} from 'react-bootstrap';
+import {Alert, Button, Card, Container, Form} from 'react-bootstrap';
 import api from '../api/api';
 
 function SignIn(props){
     const context = useContext(AuthContext);
     const [authState, setAuth] = useState({email:"", password:"", error: false});
+    const [loading, setLoading] = useState(false);
 
     const handleInput = (e) => {
         const newState = e.target.id === "email" ? {email: e.target.value}:{password: e.target.value};
@@ -14,11 +15,18 @@ function SignIn(props){
     };
 
     const handleLogin = (e) => {
+        setLoading(true);
         api.login(
             authState.email,
             authState.password,
-            (res) => {context.authenticate(true, res.data.token, res.data.email, res.data.level, res.data._id, res.data.role)},
-            (err) => {setAuth({...authState, error:true})}
+            (res) => {
+                const {level, _id, email, role, token} = res.data;
+                context.authenticate(true, token, email, level, _id, role);
+            },
+            (err) => {
+                setAuth({...authState, error:true});
+                setLoading(false);
+            }
         );
     };
     if(!context.loggedIn)
@@ -35,19 +43,17 @@ function SignIn(props){
                     <Form.Label>Password</Form.Label>
                     <Form.Control onChange={handleInput} id="password" type="password" placeholder="Password" />
                 </Form.Group>
-                {authState.error ?
+                {authState.error &&
                     <Alert variant="danger">
                     Incorrect email or password
-                    </Alert>
-                    :
-                    <></>}
-                <Button block onClick={handleLogin} variant="primary">
+                    </Alert>}
+                <Button disabled={loading} block onClick={handleLogin} variant="primary">
                     Sign in
                 </Button>
             </Form>
         </Card>
         </Container>
-    )
+    );
     return(
         <Redirect to="/"/>
     )

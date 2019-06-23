@@ -62,11 +62,42 @@ module.exports.showTasks = async function(req, res, next){
 module.exports.showUsers = async function(req, res, next){
 
     try{
-        const payload = await jwt.verify(req.body.token, process.env.SECRET);
+        const {page, pageSize, token} = req.body;
+        const payload = await jwt.verify(token, process.env.SECRET);
         if (payload.role !== "ADMIN")
             throw {message:"Unauthorized"};
-         const users = await User.find({});
-         res.send(users);
+         const [users, count] = await Promise.all([
+                 User.find({}).skip(pageSize*(page-1)).limit(pageSize),
+                 User.countDocuments()
+         ]);
+         console.log(users, count)
+         res.send({users, count});
+    }catch(err) {return next(err)}
+};
+
+module.exports.showUsers = async function(req, res, next){
+
+    try{
+        const {page, pageSize, token} = req.body;
+        const payload = await jwt.verify(token, process.env.SECRET);
+        if (payload.role !== "ADMIN")
+            throw {message:"Unauthorized"};
+        const [users, count] = await Promise.all([
+            User.find({}).skip(pageSize*(page-1)).limit(pageSize),
+            User.countDocuments()
+        ]);
+        res.send({users, count});
+    }catch(err) {return next(err)}
+};
+
+module.exports.findUsers = async function(req, res, next){
+
+    try{
+        const payload = await jwt.verify(token, process.env.SECRET);
+        if (payload.role !== "ADMIN")
+            throw {message:"Unauthorized"};
+        const users = await User.find({}).limit(req.body.n);
+        res.send(users);
     }catch(err) {return next(err)}
 };
 
