@@ -49,6 +49,13 @@ module.exports.authenticate = async function(req, res, next){
     } catch(err) {return next(new Error("401"))}
 };
 
+module.exports.validateToken = async function(req, res, next){
+    try {
+        const payload = await jwt.verify(req.body.token, process.env.SECRET);
+        res.send(payload);
+    } catch(err) {return next(new Error("401"))}
+};
+
 module.exports.showTasks = async function(req, res, next){
     try{
         if(req.body.user !== req.body.authPayload.id)

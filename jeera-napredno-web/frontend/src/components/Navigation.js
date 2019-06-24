@@ -1,10 +1,15 @@
 import React, {useContext} from 'react';
 import AuthContext from '../context/AuthContext'
-import { LinkContainer } from 'react-router-bootstrap';
-import {Navbar, Nav, NavDropdown} from "react-bootstrap";
+import {LinkContainer} from 'react-router-bootstrap';
+import {Nav, Navbar, NavDropdown} from "react-bootstrap";
 
 function Navigation(props){
     const context = useContext(AuthContext);
+    function signOut(){
+        props.history.push("/");
+        context.authenticate("");
+        sessionStorage.clear();
+    };
 
     return(
         <Navbar bg="dark" variant="dark">
@@ -33,9 +38,7 @@ function Navigation(props){
             </Nav>
             <Nav className="ml-auto">
                 <NavDropdown title={context.authentication.email}>
-                    <LinkContainer to={"/signout"}>
-                        <NavDropdown.Item>Sign out</NavDropdown.Item>
-                    </LinkContainer>
+                    <NavDropdown.Item onClick={signOut}>Sign out</NavDropdown.Item>
                     <NavDropdown.Divider /><LinkContainer to={"/settings"}>
                     <NavDropdown.Item>Settings</NavDropdown.Item>
                 </LinkContainer>

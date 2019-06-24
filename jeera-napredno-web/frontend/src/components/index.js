@@ -9,5 +9,5 @@ export { default as User } from './Users/User';
 export { default as ActiveUser } from './Users/ActiveUser';
 export { default as AddUser } from './Users/AddUser';
 export { default as UserTable } from './Users/UserTable';
-export { default as UserPaginator } from './Users/UserPaginator';
 export { default as LoadingSpinner } from './LoadingSpinner';
+export { default as NotFound } from './ErrorScreen';

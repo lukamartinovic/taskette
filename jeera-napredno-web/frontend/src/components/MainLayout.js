@@ -1,13 +1,23 @@
 import React from 'react';
 import {Container} from 'react-bootstrap'
-import {Tasks, Users} from './'
-import {Route} from 'react-router-dom'
+import {NotFound, Tasks, Users} from './'
+import {Route, Switch} from 'react-router-dom'
+
 
 function MainLayout(){
     return(
         <Container style={{height:"1000px", marginTop:"1em"}}>
-            <Route path={"/tasks"} component={Tasks}/>
-            <Route path={"/users"} component={Users}/>
+            <Switch>
+                <Route path="/tasks" component={Tasks}>
+                    <Switch>
+                    <Route exact path="/tasks/" component={Tasks}/>
+                    <Route exact path="/tasks/:id" component={Tasks}/>
+                    <Route path="/tasks/*" render={()=>{return <NotFound error={404}/>}}/>
+                    </Switch>
+                </Route>
+                <Route path="/users" component={Users}/>
+                <Route render={()=>{return <NotFound error={404}/>}}/>
+            </Switch>
         </Container>
     )
 }

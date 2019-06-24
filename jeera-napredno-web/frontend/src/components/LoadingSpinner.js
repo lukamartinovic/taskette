@@ -1,15 +1,18 @@
 import React, {useEffect, useState} from 'react';
-import {Spinner} from 'react-bootstrap';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faCog, faSpinner} from '@fortawesome/free-solid-svg-icons';
 
 export default LoadingSpinner;
 
 function LoadingSpinner(props){
     const [show, setShow] = useState(false);
-    const loading = props.loading || false;
+    const loading = props.loading || true;
+
+
     useEffect(()=>{
         let didCancel = false;
-        setTimeout(
-            ()=>{!didCancel && setShow(true);}, props.delay);
+        props.delay ? setTimeout(
+            ()=>{!didCancel && setShow(true);}, props.delay) : setShow(true);
         return(
             function(){
                 didCancel = true;
@@ -17,7 +20,7 @@ function LoadingSpinner(props){
         )
     },[]);
 
-    return (<>{loading && show && <div style={{position: "relative", top: "50%", transform: "translateY(-50%)"}}><Spinner animation="border"/></div>}</>)
+    return (<>{loading && show && <div style={{position: "relative", top: "50%", left: "50%", transform: "translate(-50%, -50%)"}}><FontAwesomeIcon spin size={props.size || "2x"} icon={props.cog ? faCog : faSpinner}/></div>}</>)
 }
 
 

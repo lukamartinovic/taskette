@@ -22,6 +22,7 @@ function handleSubmit(values, {resetForm, setErrors, setSubmitting, props, setSt
         resetForm();
         setStatus({success:true});
         setSubmitting(false);
+        props.setPage();
     }
     function errorCallback(err){
         if(err.code === 11000)
@@ -85,7 +86,7 @@ function AddUser({values, errors, handleChange, handleSubmit, validationSchema, 
                     <Form.Group controlId="password">
                         <Form.Label>Password</Form.Label>
                         <InputGroup>
-                        <Form.Control type={hidePassword ? "password" : "text"} value={password} onChange={handleChange} placeholder="Password"/>
+                        <Form.Control type={!hidePassword ? "password" : "text"} value={password} onChange={handleChange} placeholder="Password"/>
                             <InputGroup.Append>
                                 <InputGroup.Text style={{cursor:"pointer"}} onClick={()=>{setHidePassword(!hidePassword)}}>
                                     <FontAwesomeIcon style={{width: "1em"}} icon={hidePassword ? faEyeSlash : faEye} />

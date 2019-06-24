@@ -1,5 +1,4 @@
 import React, {useContext, useState} from 'react';
-import {Redirect} from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
 import {Alert, Button, Card, Container, Form} from 'react-bootstrap';
 import api from '../api/api';
@@ -29,7 +28,6 @@ function SignIn(props){
             }
         );
     };
-    if(!context.loggedIn)
     return(
         <Container style={{ width: '22rem', marginTop: '3em'}}>
         <Card style={{padding:"1em"}}>
@@ -54,9 +52,6 @@ function SignIn(props){
         </Card>
         </Container>
     );
-    return(
-        <Redirect to="/"/>
-    )
 }
 
 export default SignIn;

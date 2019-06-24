@@ -19,6 +19,7 @@ router.post('/user/login', user.login, errorHandler);
 router.post('/user/authenticate', user.authenticate, errorHandler);
 router.post('/user/tasks', user.authenticate, user.showTasks, errorHandler);
 router.post('/user/getid', user.getId, errorHandler);
+router.post('/user/validateToken', user.validateToken, errorHandler);
 
 router.post('/task/add', task.addTask, errorHandler);
 router.delete('/task/:id/', task.removeTask, errorHandler);

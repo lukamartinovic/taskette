@@ -30,6 +30,11 @@ const api = {
             {email: email, firstName: firstName, lastName: lastName, password: password, token: token, role:role})
             .then((res) => callback(res))
             .catch((err) => errCallback(err.response.data))
+    },
+    validateToken(token, callback, errorCallback){
+        axios.post(endpoints.validateToken, {token:token})
+            .then((res)=> callback(res))
+            .catch((err) => errorCallback(err))
     }
 
 };

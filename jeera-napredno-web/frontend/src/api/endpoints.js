@@ -1,9 +1,11 @@
+const host = "http://localhost:3000";
 const endpoints = {
-    getTasks: "http://localhost:3000/user/tasks",
-    login: "http://localhost:3000/user/login",
-    changeTaskStatus: "http://localhost:3000/task/changeStatus",
-    getUsers: "http://localhost:3000/users",
-    addUser: "http://localhost:3000/user/add"
+    getTasks: `${host}/user/tasks`,
+    login: `${host}/user/login`,
+    changeTaskStatus: `${host}/task/changeStatus`,
+    getUsers: `${host}/users`,
+    addUser: `${host}/user/add`,
+    validateToken: `${host}/user/validateToken`
 };
 
 export default endpoints;

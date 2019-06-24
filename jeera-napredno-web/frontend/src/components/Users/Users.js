@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import Container from "react-bootstrap/Container";
 import api from '../../api/api';
 import AuthContext from '../../context/AuthContext';
-import {Button, Card, Form, InputGroup} from "react-bootstrap";
+import {Card, Form, InputGroup, Pagination} from "react-bootstrap";
 import {AddUser, UserTable} from '../index'
 import Fuse from 'fuse.js';
 import {Route} from "react-router-dom";
@@ -18,8 +18,25 @@ function Users(props){
     const [page, setPage] = useState(1);
     const [pages, setPages] = useState();
     const [loading, setLoading] = useState(false);
+
     const pageSize = 12;
     const delay = 300;
+
+    function renderPagination(){
+        return(
+            <div style={{width:"100%"}}>
+            <Pagination style={{margin:"auto", width:"fit-content"}}>
+                <Pagination.First onClick={()=>{setPage(1)}}></Pagination.First>
+                <Pagination.Prev onClick={()=>{page > 1 && setPage(page-1)}}></Pagination.Prev>
+                <Pagination.Item active>{page} / {pages || "..."}</Pagination.Item>
+                <Pagination.Next onClick={()=>{page < pages && setPage(page+1)}}/>
+                <Pagination.Last onClick={()=>{setPage(pages)}}></Pagination.Last>
+
+            </Pagination>
+            </div>
+        )
+    }
+
     useEffect(
         () => {
             let didCancel = false;
@@ -76,29 +93,22 @@ function Users(props){
                     </InputGroup>
                 </Form>
             </Card.Header>
-            <Card.Body style={{height:`${pageSize*2.33}rem`}}>
+            <Card.Body style={{height:`${pageSize*2.33}rem`, padding:"0"}}>
                 {loading ? <LoadingSpinner delay={delay} loading={loading}/> : <UserTable users={returnUsers()}/>}
-            </Card.Body>
+            </Card.Body >
             <Card.Footer>
-                <Button disabled={loading} onClick={() => {
-                    setPage(page + 1)
-                }}>+1
-                </Button>
-                <Button disabled={loading} onClick={() => {
-                    setPage(page === 1 ? page : page -1)
-                }}>-1
-                </Button>
+               { renderPagination()}
             </Card.Footer>
         </Card>
     }
 
     return(
         <>
-            <Route path="/users/createUser" render={(props)=>{return <AddUser {...props} authContext={authContext}/>}}/>
+            <Route path="/users/createUser" render={(props)=>{return <AddUser {...props} setPage={()=>{setPage(1)}} authContext={authContext}/>}}/>
             <Container>
                     {UsersPanel()}
             </Container>
-            </>
+        </>
 
     )
 }

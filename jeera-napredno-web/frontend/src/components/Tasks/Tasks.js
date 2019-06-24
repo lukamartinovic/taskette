@@ -6,10 +6,10 @@ import api from "../../api/api";
 import {Route} from 'react-router-dom'
 
 function Tasks(props){
-
+    console.log(props.match.params.id)
     const authContext = useContext(AuthContext);
     const [tasks, setTasks] = useState([]);
-    const [activeTask, setActiveTask] = useState(null);
+    const [activeTask, setActiveTask] = useState("");
     const [fetch, refetch] = useState(false);
 
     useEffect(() => {

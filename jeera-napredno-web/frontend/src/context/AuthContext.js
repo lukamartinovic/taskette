@@ -5,3 +5,4 @@ export default React.createContext({
     token: "",
     authenticate: (loggedIn, token) => {}
 });
+
