@@ -41,8 +41,8 @@ const api = {
             .then((res)=>{callback(res)})
             .catch((err)=>{errorCallback(err)})
     },
-    getProjects(token, callback, errorCallback){
-        axios.post(endpoints.getProjects, {token:token})
+    getProjects(token, page, pageSize, callback, errorCallback){
+        axios.post(endpoints.getProjects, {token:token, page:page, pageSize:pageSize})
             .then((res)=>{callback(res)})
             .catch((err) => {errorCallback(err)})
     },

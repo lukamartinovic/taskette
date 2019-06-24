@@ -3,6 +3,7 @@ import React, {useEffect, useState} from "react";
 import api from "../../api/api";
 import {UserTable} from '../index'
 import moment from 'moment';
+import Markdown from 'markdown-to-jsx';
 
 function ActiveProject(props){
 
@@ -19,9 +20,9 @@ function ActiveProject(props){
                 <Card.Subtitle className="text-muted mb-3 font-weight-normal">
                     {moment(props.project.created).format('DD.MM.YYYY')}
                 </Card.Subtitle>
-                    <Card.Text>
-                        {props.project.description}
-                    </Card.Text>
+                    <div className="overflow-auto" style={{maxHeight:"60vh"}}>
+                        <Markdown>{props.project.description}</Markdown>
+                    </div>
                 </>)
         }
         if(tab === "users"){
@@ -35,7 +36,7 @@ function ActiveProject(props){
        api.getUsersById(props.token, props.project.users,
            (res)=>{setUsers(res.data)},
            (err) => {console.log(err)})
-    },[props.project, tab]);
+    },[props.project, tab, props.token]);
 
     return(
     <Card>

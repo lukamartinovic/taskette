@@ -3,10 +3,11 @@ import {Alert, Button, Form, Modal} from "react-bootstrap";
 import api from '../../api/api';
 import {withFormik} from 'formik';
 import * as Yup from 'yup';
+import Markdown from 'markdown-to-jsx';
 
 const validationSchema = Yup.object().shape({
     name: Yup.string().required("Project name is required").max(50, "Cannot be longer than 50 characters"),
-    description: Yup.string().max(1000, "Cannot be longer than 1000 characters").required("Description is required")
+    description: Yup.string().max(5000, "Cannot be longer than 5000 characters").required("Description is required")
 });
 
 function handleSubmit(values, {resetForm, setSubmitting, props, setStatus}){
@@ -28,7 +29,8 @@ const AddProjectFormik = withFormik({
     mapPropsToValues(){
         return{
             name: "",
-            description: ""
+            description: "",
+            preview: false
         }
     },
     mapPropsToStatus(){
@@ -42,11 +44,11 @@ const AddProjectFormik = withFormik({
 
 
 function AddProject({values, errors, handleChange, handleSubmit, validationSchema, touched, isSubmitting, status, setStatus, ...props}){
-    const {name, description} = values;
+    const {name, description, preview} = values;
     useEffect(() => {setStatus({success:false})}, [values, touched, setStatus]);
 
     return(
-        <Modal onHide={()=>{props.history.push('/projects/')}} show>
+        <Modal size="lg" onHide={()=>{props.history.push('/projects/')}} show>
             <Modal.Header closeButton>
                 <Modal.Title>Create project</Modal.Title>
             </Modal.Header>
@@ -61,6 +63,13 @@ function AddProject({values, errors, handleChange, handleSubmit, validationSchem
                         <Form.Label >Project description</Form.Label>
                         <Form.Control value={description} onChange={handleChange} as="textarea"/>
                         {touched.description && errors.description && <Form.Text className="text-danger">{errors.description}</Form.Text>}
+                    </Form.Group>
+                    <Form.Group controlId="preview">
+                        <Form.Check value={preview} onChange={handleChange} type="checkbox" label="Markdown preview" />
+                        {touched.description && errors.description && <Form.Text className="text-danger">{errors.description}</Form.Text>}
+                    </Form.Group>
+                    <Form.Group  className="overflow-auto" style={{maxHeight:"40vh"}}>
+                    {values.preview && values.description !== "" && <Markdown className="p-2">{values.description}</Markdown>}
                     </Form.Group>
                     {status.success ?
                         <Alert variant="success">Project successfully created!</Alert>:
