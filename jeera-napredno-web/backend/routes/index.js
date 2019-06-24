@@ -14,6 +14,7 @@ router.get('/', function (req, res) {
 router.post('/users', user.authenticate, user.showUsers, errorHandler);
 
 router.post('/user/add', user.authenticate, user.addUser, errorHandler);
+router.post('/user/getUsers', user.authenticate, user.getUsersById, errorHandler);
 router.delete('/user/:id/', user.removeUser, errorHandler);
 router.post('/user/login', user.login, errorHandler);
 router.post('/user/authenticate', user.authenticate, errorHandler);
@@ -28,6 +29,7 @@ router.post('/task/edit', task.editTask, errorHandler);
 router.post('/task/changeStatus', user.authenticate, task.changeTaskStatus, errorHandler)
 
 router.post('/project/add', project.addProject, errorHandler);
+router.post('/projects', project.getProjects, errorHandler);
 router.post('/project/:id/addUser', project.addUser, errorHandler);
 router.post('/project/:id/addSprint', project.addSprint, errorHandler);
 

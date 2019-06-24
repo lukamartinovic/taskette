@@ -11,3 +11,5 @@ export { default as UserTable } from './Users/UserTable';
 export { default as LoadingSpinner } from './LoadingSpinner';
 export { default as NotFound } from './ErrorScreen';
 export { default as UserSearch } from './Users/UserSearch';
+export { default as Projects } from './Projects';
+export { default as ActiveProject } from './ActiveProject';

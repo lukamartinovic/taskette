@@ -4,7 +4,7 @@ const userSchema = require('../schema/User');
 const companySchema = require('../schema/Company');
 const projectSchema = require('../schema/Project');
 const Project = mongoose.model('Project', projectSchema);
-
+const jwt = require("jsonwebtoken");
 const Schema = mongoose.Schema;
 
 module.exports.addProject = async function (req, res, next) {
@@ -34,6 +34,20 @@ module.exports.addUser = function (req, res, next) {
         { _id: req.params.id },
         { $addToSet: { users: { $each: req.body.users } }}).catch((err) => {return next(err)})
     res.status(200).send(project);
+
+};
+
+module.exports.getProjects = async function (req, res, next) {
+    try{
+        const {page, pageSize, token} = req.body;
+        const payload = await jwt.verify(token, process.env.SECRET);
+        //TODO: add authorization
+        const [projects, count] = await Promise.all([
+            Project.find({}).skip(pageSize*(page-1)).limit(pageSize),
+            Project.countDocuments()
+        ]);
+        res.send({projects, count});
+    }catch(err) {return next(err)}
 
 };
 

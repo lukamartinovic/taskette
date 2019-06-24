@@ -23,6 +23,18 @@ module.exports.addUser = async function (req, res, next) {
     } catch(err) {return next(err);}
 };
 
+module.exports.getUsersById = async function (req, res, next){
+    try{
+        console.log("as")
+        //TODO:add authorization
+        const users = await User.find({_id: req.body._ids});
+        users.forEach(user => delete user.password);
+        res.send(users);
+        }
+    catch(err){return next(err)
+    }
+};
+
 module.exports.login = async function (req, res, next) {
      try{
          let loginErr = "Incorrect email or password";

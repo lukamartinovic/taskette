@@ -58,6 +58,10 @@ const UserSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "Task",
     }],
+    projects:[{
+        type: Schema.Types.ObjectId,
+        ref: "Project"
+    }],
     level: {
         type: Number,
         default: null,

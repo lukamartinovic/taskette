@@ -1,6 +1,6 @@
 import React from 'react';
 import {Container} from 'react-bootstrap'
-import {NotFound, Tasks, Users} from './'
+import {NotFound, Projects, Tasks, Users} from './'
 import {Route, Switch} from 'react-router-dom'
 
 
@@ -16,6 +16,7 @@ function MainLayout(){
                     </Switch>
                 </Route>
                 <Route path="/users" render={(props)=>{return <Users {...props} search/>}}/>
+                <Route path="/projects" render={(props)=>{return <Projects {...props} search/>}}/>
                 <Route render={()=>{return <NotFound error={404}/>}}/>
             </Switch>
         </Container>

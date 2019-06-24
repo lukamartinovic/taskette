@@ -40,6 +40,16 @@ const api = {
         axios.post(endpoints.searchUsers, {token:token, searchString:searchString, n:n})
             .then((res)=>{callback(res)})
             .catch((err)=>{errorCallback(err)})
+    },
+    getProjects(token, callback, errorCallback){
+        axios.post(endpoints.getProjects, {token:token})
+            .then((res)=>{callback(res)})
+            .catch((err) => {errorCallback(err)})
+    },
+    getUsersById(token, _ids, callback, errorCallback){
+        axios.post(endpoints.getUsersById, {token:token, _ids:_ids})
+            .then((res) => {callback(res)})
+            .catch((err) =>{errorCallback(err)})
     }
 
 };

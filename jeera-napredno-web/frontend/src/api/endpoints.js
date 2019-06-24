@@ -1,4 +1,6 @@
+//TODO: make this an environment variable
 const host = "http://localhost:3000";
+
 const endpoints = {
     getTasks: `${host}/user/tasks`,
     login: `${host}/user/login`,
@@ -6,7 +8,9 @@ const endpoints = {
     getUsers: `${host}/users`,
     addUser: `${host}/user/add`,
     validateToken: `${host}/user/validateToken`,
-    searchUsers: `${host}/user/search`
+    searchUsers: `${host}/user/search`,
+    getProjects: `${host}/projects`,
+    getUsersById: `${host}/user/getUsers`
 };
 
 export default endpoints;

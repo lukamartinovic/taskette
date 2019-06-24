@@ -24,7 +24,7 @@ function Users(props){
             //didCancel flag prevents memory leaks by canceling async functions if the component is unmounted before they are finished executing
             let didCancel = false;
             !didCancel && setLoading(true);
-            !searching && api.getUsers(authContext.authentication.token, pageSize, page,
+            !searching && !didCancel && api.getUsers(authContext.authentication.token, pageSize, page,
                 ({data: {users, count}}) => {
                     let fetchedUsers = users;
                     fetchedUsers.forEach((user, index) =>
