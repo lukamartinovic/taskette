@@ -13,3 +13,4 @@ export { default as NotFound } from './ErrorScreen';
 export { default as UserSearch } from './Users/UserSearch';
 export { default as Projects } from './Projects/Projects';
 export { default as ActiveProject } from './Projects/ActiveProject';
+export { default as AddProject } from './Projects/AddProject'

@@ -50,6 +50,12 @@ const api = {
         axios.post(endpoints.getUsersById, {token:token, _ids:_ids})
             .then((res) => {callback(res)})
             .catch((err) =>{errorCallback(err)})
+    },
+    //TODO: figure out the company stuff
+    addProject(token, users, description, name, callback, errorCallback){
+        axios.post(endpoints.addProject, {token:token, name:name, users:users, description:description, company: "5d0d283a95283114b0a5df21"})
+            .then((res)=>{callback(res)})
+            .catch((err)=>{errorCallback(err)})
     }
 
 };

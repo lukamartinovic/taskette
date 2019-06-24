@@ -6,26 +6,29 @@ const projectSchema = require('../schema/Project');
 const Project = mongoose.model('Project', projectSchema);
 const jwt = require("jsonwebtoken");
 const Schema = mongoose.Schema;
-
 module.exports.addProject = async function (req, res, next) {
+
     const Company = mongoose.model('Company', companySchema);
+    const {company, users, description, name, token} = req.body;
     const newProject = new Project(
         {
-            name: req.body.name,
-            description: req.body.description,
-            company: req.body.company,
-            users: req.body.users
+            name: name,
+            description: description,
+            company: company,
+            users: users
         }
     );
 
     try{
+        const payload = await jwt.verify(token, process.env.SECRET);
+        if(payload.role !== "ADMIN")
+            throw new Error("401");
         const savedProject = await newProject.save();
         await Company.updateOne(
             {_id:newProject.company},
             {$push: {projects: savedProject._id}});
         res.send(savedProject);
     }catch(err){return next(err)}
-
 };
 
 module.exports.addUser = function (req, res, next) {
