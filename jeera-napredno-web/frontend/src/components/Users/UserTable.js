@@ -4,7 +4,7 @@ import {Table} from "react-bootstrap";
 function UserTable(props){
     return(
         <>{props.users.length !== 0 &&
-            <Table responsive="md" size="sm"  striped hover borderless>
+            <Table responsive="lg" size="sm"  striped hover borderless>
                 <thead>
                 <tr>
                     <th className="text-center">#</th>

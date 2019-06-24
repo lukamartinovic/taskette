@@ -1,9 +1,12 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Col, ListGroup, Row, Tab} from 'react-bootstrap'
-import api from '../api/api';
-import AuthContext from "../context/AuthContext";
+import api from '../../api/api';
+import AuthContext from "../../context/AuthContext";
 import ActiveProject from './ActiveProject';
 import {Route} from 'react-router-dom';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faPencilRuler} from "@fortawesome/free-solid-svg-icons";
+
 
 function Projects(props){
     const context = useContext(AuthContext).authentication;
@@ -24,6 +27,9 @@ function Projects(props){
         <Tab.Container id="list-group-tabs-example">
         <Row>
         <Col sm={4}>
+            <ListGroup.Item action variant="primary" className="text-center">
+                Add project&nbsp;&nbsp;&nbsp;<FontAwesomeIcon size="lg" icon={faPencilRuler}/>
+            </ListGroup.Item>
             <ListGroup>
                 {projects.map(project => {
                     return <ListGroup.Item eventKey={project._id} key={project._id} action onClick={()=>{setActiveProject(project); props.history.push(`/projects/${project._id}`)}}>{project.name}</ListGroup.Item>

@@ -22,6 +22,10 @@ const ProjectSchema = new Schema({
     sprints: {
         type: Schema.Types.ObjectId,
         ref: "Sprint"
+    },
+    created: {
+        type: Date,
+        default: Date.now
     }
 });
 
