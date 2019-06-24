@@ -18,7 +18,7 @@ function LoadingSpinner(props){
                 didCancel = true;
             }
         )
-    },[]);
+    },[props.delay]);
 
     return (<>{loading && show && <div style={{position: "relative", top: "50%", left: "50%", transform: "translate(-50%, -50%)"}}><FontAwesomeIcon spin size={props.size || "2x"} icon={props.cog ? faCog : faSpinner}/></div>}</>)
 }

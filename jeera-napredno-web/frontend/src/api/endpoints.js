@@ -5,7 +5,8 @@ const endpoints = {
     changeTaskStatus: `${host}/task/changeStatus`,
     getUsers: `${host}/users`,
     addUser: `${host}/user/add`,
-    validateToken: `${host}/user/validateToken`
+    validateToken: `${host}/user/validateToken`,
+    searchUsers: `${host}/user/search`
 };
 
 export default endpoints;

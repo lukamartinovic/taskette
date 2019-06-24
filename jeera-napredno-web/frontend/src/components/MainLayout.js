@@ -15,7 +15,7 @@ function MainLayout(){
                     <Route path="/tasks/*" render={()=>{return <NotFound error={404}/>}}/>
                     </Switch>
                 </Route>
-                <Route path="/users" component={Users}/>
+                <Route path="/users" render={(props)=>{return <Users {...props} search/>}}/>
                 <Route render={()=>{return <NotFound error={404}/>}}/>
             </Switch>
         </Container>

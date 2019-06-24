@@ -69,4 +69,6 @@ const UserSchema = new Schema({
     }
 });
 
+UserSchema.index({"email":"text"});
+
 module.exports = UserSchema;
