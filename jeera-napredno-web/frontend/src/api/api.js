@@ -25,16 +25,21 @@ const api = {
             .then((res) => callback(res))
             .catch((err) => errorCallback(err))
     },
-    addUser(email, firstName, lastName, password, role, token, callback, errCallback){
+    addUser(email, firstName, lastName, password, role, token, callback, errorCallback){
         axios.post(endpoints.addUser,
             {email: email, firstName: firstName, lastName: lastName, password: password, token: token, role:role})
             .then((res) => callback(res))
-            .catch((err) => errCallback(err.response.data))
+            .catch((err) => errorCallback(err.response.data))
     },
     validateToken(token, callback, errorCallback){
         axios.post(endpoints.validateToken, {token:token})
             .then((res)=> callback(res))
             .catch((err) => errorCallback(err))
+    },
+    searchUsers(token, searchString, n, callback, errorCallback){
+        axios.post(endpoints.searchUsers, {token:token, searchString:searchString, n:n})
+            .then((res)=>{callback(res)})
+            .catch((err)=>{errorCallback(err)})
     }
 
 };

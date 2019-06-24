@@ -3,7 +3,7 @@ import {Table} from "react-bootstrap";
 
 function UserTable(props){
     return(
-        props.users && <>
+        <>{props.users.length !== 0 &&
             <Table responsive="md" size="sm"  striped hover borderless>
                 <thead>
                 <tr>
@@ -18,9 +18,10 @@ function UserTable(props){
                 {props.users.map(
                     (user) => {
                         const {lastName, role, index, email, firstName} = user;
+                        let key = index || email;
                         return (
-                            <tr key={index}>
-                                <td style={{width:"3%"}} className="text-center" >{index}.</td>
+                            <tr onClick={()=>{console.log(user)}} key={key}>
+                                <td style={{width:"3%"}} className="text-center" >{index && `${index}.`}</td>
                                 <td style={{width:"30%"}} >{email}</td>
                                 <td style={{width:"28%"}} >{firstName}</td>
                                 <td style={{width:"29%"}} >{lastName}</td>
@@ -29,7 +30,7 @@ function UserTable(props){
                         )
                     })}
                 </tbody>
-            </Table>
+            </Table>}
         </>
 
 

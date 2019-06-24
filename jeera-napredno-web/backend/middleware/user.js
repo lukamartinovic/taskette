@@ -97,13 +97,13 @@ module.exports.showUsers = async function(req, res, next){
     }catch(err) {return next(err)}
 };
 
-module.exports.findUsers = async function(req, res, next){
-
+module.exports.searchUsers = async function(req, res, next){
     try{
+        const {token, searchString, n} = req.body;
         const payload = await jwt.verify(token, process.env.SECRET);
         if (payload.role !== "ADMIN")
             throw {message:"Unauthorized"};
-        const users = await User.find({}).limit(req.body.n);
+        const users = await User.find({"email": {$regex: `.*${searchString}.*`}}).limit(n);
         res.send(users);
     }catch(err) {return next(err)}
 };
