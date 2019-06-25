@@ -16,7 +16,6 @@ function handleSubmit(values, {resetForm, setSubmitting, props, setStatus}){
         resetForm();
         setStatus({success:true});
         setSubmitting(false);
-        props.refetch()
     }
     function errorCallback(err){
         console.log(err);
@@ -72,7 +71,7 @@ function AddProject({values, errors, handleChange, handleSubmit, validationSchem
                     {values.preview && values.description !== "" && <Markdown className="p-2">{values.description}</Markdown>}
                     </Form.Group>
                     {status.success ?
-                        <Alert variant="success">Project successfully created!</Alert>:
+                        <Alert variant="success" className="w-100 text-center">Project successfully created!</Alert>:
                         <Button block disabled={isSubmitting} variant="primary" type="submit">
                             Submit
                         </Button>}

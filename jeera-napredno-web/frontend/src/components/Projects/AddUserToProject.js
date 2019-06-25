@@ -29,7 +29,7 @@ function AddUserToProject(props){
             </Modal.Header>
             <Users selectUsers history={props.history} search/>
             <Modal.Footer className="d-flex justify-content-center">
-               {success ? <Alert variant="success">User list successfully edited!</Alert> :
+               {success ? <Alert variant="success" className="w-100 text-center">User list successfully edited!</Alert> :
                 <div><Button disabled={submitting} onClick={handleSubmit} className="align-content-md-center">Submit</Button></div>}
             </Modal.Footer>
         </Modal>
