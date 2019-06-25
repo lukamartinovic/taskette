@@ -1,15 +1,20 @@
 import {Button, Card, Nav} from "react-bootstrap";
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import api from "../../api/api";
 import {UserTable} from '../index'
 import moment from 'moment';
 import Markdown from 'markdown-to-jsx';
 import AddUserToProject from "./AddUserToProject";
+import ProjectContext from "../../context/ProjectContext";
 
 function ActiveProject(props){
     const [users, setUsers] = useState();
     const [tab, setTab] = useState("project");
     const [addUserDialog, setAddUserDialog] = useState(false);
+
+    const project = useContext(ProjectContext).projectContext.activeProject;
+
+    console.log(project)
 
     function changeTab(tab){
         setTab(tab);
@@ -19,10 +24,10 @@ function ActiveProject(props){
         if(tab === "project"){
             return(<>
                 <Card.Subtitle className="text-muted mb-3 font-weight-normal">
-                    {moment(props.project.created).format('DD.MM.YYYY')}
+                    {moment(project.created).format('DD.MM.YYYY')}
                 </Card.Subtitle>
                     <div className="overflow-auto" style={{maxHeight:"60vh"}}>
-                        <Markdown>{props.project.description}</Markdown>
+                        <Markdown>{project.description}</Markdown>
                     </div>
                 </>)
         }
@@ -34,10 +39,10 @@ function ActiveProject(props){
     };
 
     useEffect(() =>{
-       api.getUsersById(props.token, props.project.users,
+       api.getUsersById(props.token, project.users,
            (res)=>{setUsers(res.data)},
            (err) => {console.log(err.response.data)})
-    },[props.project, tab, props.token]);
+    },[project, tab, props.token, project, addUserDialog]);
 
     return(<>
     <Card>
@@ -56,12 +61,12 @@ function ActiveProject(props){
         </Card.Header>
         <Card.Body>
             <Card.Title>
-                {props.project.name}
+                {project.name}
             </Card.Title>
             {returnContent(tab)}
         </Card.Body>
     </Card>
-            <AddUserToProject project={props.project} show={addUserDialog} handleClose={(d)=>{setAddUserDialog(d)}} history={props.history}/>
+            <AddUserToProject show={addUserDialog} handleClose={()=>{setAddUserDialog(!addUserDialog)}}/>
     </>
 
     )

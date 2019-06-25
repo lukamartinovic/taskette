@@ -7,33 +7,40 @@ import {Route} from 'react-router-dom';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faPencilRuler} from "@fortawesome/free-solid-svg-icons";
 import {AddProject} from "../index";
-import {debounce} from "lodash";
+import ProjectContext from '../../context/ProjectContext'
+import {pull} from 'lodash';
 
 function Projects(props){
     const context = useContext(AuthContext).authentication;
-    const [projects, setProjects] = useState([]);
-    const [activeProject, setActiveProject] = useState(null);
-    const [refetch, setRefetch] = useState(false);
+    const [projectContext, setProjectContext] = useState({projects:[], activeProject: {}, newUsersList: []});
     const [page, setPage] = useState(1);
     const [pages, setPages] = useState(5);
     const [loading, setLoading] = useState(true);
 
-    const pageSize = Math.round(window.innerHeight/80);
-    function handleRefetch(){
-        setRefetch(!refetch)
+    function setContextValue(context){
+        setProjectContext(context);
+    }
+
+    function setNewUserList(id){
+        let currentUsersArray = projectContext.newUsersList;
+        let newUsersArray = currentUsersArray.includes(id) ? pull(currentUsersArray, id) : currentUsersArray.push(id);
+        setProjectContext({...projectContext, newUserList: newUsersArray})
+    }
+
+    const contextValue = {
+        projectContext,
+        setContextValue,
+        setNewUserList
     };
 
-    const handleProjectChange = debounce((project)=>{
-        setActiveProject(project);
-        props.history.push(`/projects/${project._id}`);
-    }, 150);
+    const pageSize = Math.round(window.innerHeight/80);
 
     useEffect(() => {
         let didCancel = false;
         !didCancel && setLoading(true);
         !didCancel && api.getProjects(context.token, page, pageSize,
             (res) => {
-                !didCancel && setProjects(res.data.projects);
+                !didCancel && setProjectContext({...projectContext, projects: res.data.projects});
                 !didCancel && setPages(Math.ceil(res.data.count / pageSize));
                 !didCancel && setLoading(false);
             },
@@ -41,7 +48,7 @@ function Projects(props){
                 console.log(err)
             });
         return () => {didCancel = true}
-    }, [refetch, page, pages, pageSize, context.token]);
+    }, [page, pages, pageSize, context.token]);
 
     function renderPagination(){
         return(
@@ -57,7 +64,7 @@ function Projects(props){
         )
 
     }
-    return(<>
+    return(<ProjectContext.Provider value={contextValue}>
         <Tab.Container id="list-group-tabs-example">
         <Row>
         <Col sm={4}>
@@ -65,21 +72,22 @@ function Projects(props){
                 Add project&nbsp;&nbsp;&nbsp;<FontAwesomeIcon size="lg" icon={faPencilRuler}/>
             </ListGroup.Item>
             <ListGroup>
-                {projects.length !== 0 &&  projects.map(project => {
-                    return <ListGroup.Item eventKey={project._id} key={project._id} action onClick={()=>{handleProjectChange(project)}}>{project.name}</ListGroup.Item>
+                {!loading && projectContext.projects.length !== 0 &&  projectContext.projects.map(project => {
+                    return <ListGroup.Item eventKey={project._id} key={project._id} action onClick={()=>{setProjectContext({...projectContext, activeProject: project, newUsersList: project.users}); props.history.push(`/projects/${project._id}`)}}>{project.name}</ListGroup.Item>
                 })}
                 {renderPagination()}
             </ListGroup>
         </Col>
         <Col sm={8}>
-                {activeProject && <Route path={`/projects/${activeProject._id}`} render={
-                    (props) => {return <ActiveProject {...props} refetch={refetch} handleRefetch={handleRefetch} project={activeProject} token={context.token}/>}
+                {projectContext.activeProject &&
+                <Route path={`/projects/${projectContext.activeProject._id}`} render={
+                    (props) => {return <ActiveProject {...props} token={context.token}/>}
                 }/>}
         </Col>
         </Row>
         </Tab.Container>
-        <Route path="/projects/addProject" render={(props)=>{return <AddProject {...props} token={context.token} refetch={()=>{setRefetch(!refetch)}}/>}}/>
-    </>)
+        <Route path="/projects/addProject" render={(props)=>{return <AddProject {...props} token={context.token}/>}}/>
+    </ProjectContext.Provider>)
 }
 
 export default Projects;
