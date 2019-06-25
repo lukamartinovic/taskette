@@ -31,12 +31,13 @@ module.exports.addProject = async function (req, res, next) {
     }catch(err){return next(err)}
 };
 
-module.exports.addUser = function (req, res, next) {
-
-    Project.updateOne(
-        { _id: req.params.id },
-        { $addToSet: { users: { $each: req.body.users } }}).catch((err) => {return next(err)})
-    res.status(200).send(project);
+module.exports.editProjectUsers = async function (req, res, next) {
+    try{
+    const project = await Project.updateOne(
+        { _id: req.body.project },
+        { $set: { users: req.body.users }}).catch((err) => {return next(err)})
+    res.status(200).send(project)}
+    catch(err){return next(err)}
 
 };
 

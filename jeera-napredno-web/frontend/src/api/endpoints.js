@@ -11,7 +11,8 @@ const endpoints = {
     searchUsers: `${host}/user/search`,
     getProjects: `${host}/projects`,
     getUsersById: `${host}/user/getUsers`,
-    addProject: `${host}/project/add`
+    addProject: `${host}/project/add`,
+    editProjectUsers: `${host}/project/editUsers`
 };
 
 export default endpoints;

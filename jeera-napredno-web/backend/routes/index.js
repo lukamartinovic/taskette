@@ -30,7 +30,7 @@ router.post('/task/changeStatus', user.authenticate, task.changeTaskStatus, erro
 
 router.post('/project/add', project.addProject, errorHandler);
 router.post('/projects', project.getProjects, errorHandler);
-router.post('/project/:id/addUser', project.addUser, errorHandler);
+router.post('/project/editUsers', project.editProjectUsers, errorHandler);
 router.post('/project/:id/addSprint', project.addSprint, errorHandler);
 
 

@@ -19,6 +19,9 @@ function Projects(props){
     const [loading, setLoading] = useState(true);
 
     const pageSize = Math.round(window.innerHeight/80);
+    function handleRefetch(){
+        setRefetch(!refetch)
+    };
 
     const handleProjectChange = debounce((project)=>{
         setActiveProject(project);
@@ -54,7 +57,7 @@ function Projects(props){
         )
 
     }
-    return(projects.length !== 0 && <>
+    return(<>
         <Tab.Container id="list-group-tabs-example">
         <Row>
         <Col sm={4}>
@@ -62,7 +65,7 @@ function Projects(props){
                 Add project&nbsp;&nbsp;&nbsp;<FontAwesomeIcon size="lg" icon={faPencilRuler}/>
             </ListGroup.Item>
             <ListGroup>
-                {projects.map(project => {
+                {projects.length !== 0 &&  projects.map(project => {
                     return <ListGroup.Item eventKey={project._id} key={project._id} action onClick={()=>{handleProjectChange(project)}}>{project.name}</ListGroup.Item>
                 })}
                 {renderPagination()}
@@ -70,7 +73,7 @@ function Projects(props){
         </Col>
         <Col sm={8}>
                 {activeProject && <Route path={`/projects/${activeProject._id}`} render={
-                    (props) => {return <ActiveProject {...props} project={activeProject} token={context.token}/>}
+                    (props) => {return <ActiveProject {...props} refetch={refetch} handleRefetch={handleRefetch} project={activeProject} token={context.token}/>}
                 }/>}
         </Col>
         </Row>

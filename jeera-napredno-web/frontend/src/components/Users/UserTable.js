@@ -4,7 +4,6 @@ import CheckedUsers from "../../context/CheckedUsers";
 
 function UserTable(props){
     const context = useContext(CheckedUsers);
-
     function handleCheck(e){
        context.setCheckedUsers(e.target.name, e.target.checked)
     }

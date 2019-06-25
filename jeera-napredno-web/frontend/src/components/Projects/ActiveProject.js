@@ -1,4 +1,4 @@
-import {Card, Nav} from "react-bootstrap";
+import {Button, Card, Nav} from "react-bootstrap";
 import React, {useEffect, useState} from "react";
 import api from "../../api/api";
 import {UserTable} from '../index'
@@ -7,9 +7,9 @@ import Markdown from 'markdown-to-jsx';
 import AddUserToProject from "./AddUserToProject";
 
 function ActiveProject(props){
-
     const [users, setUsers] = useState();
     const [tab, setTab] = useState("project");
+    const [addUserDialog, setAddUserDialog] = useState(false);
 
     function changeTab(tab){
         setTab(tab);
@@ -28,7 +28,7 @@ function ActiveProject(props){
         }
         if(tab === "users"){
             return(
-                users && <UserTable users={users}/>
+                <><Button onClick={()=>{setAddUserDialog(true)}}>Add users</Button>{users && <UserTable users={users}/>}</>
             )
         }
     };
@@ -36,7 +36,7 @@ function ActiveProject(props){
     useEffect(() =>{
        api.getUsersById(props.token, props.project.users,
            (res)=>{setUsers(res.data)},
-           (err) => {console.log(err)})
+           (err) => {console.log(err.response.data)})
     },[props.project, tab, props.token]);
 
     return(<>
@@ -61,7 +61,7 @@ function ActiveProject(props){
             {returnContent(tab)}
         </Card.Body>
     </Card>
-            <AddUserToProject history={props.history}/>
+            <AddUserToProject project={props.project} show={addUserDialog} handleClose={(d)=>{setAddUserDialog(d)}} history={props.history}/>
     </>
 
     )

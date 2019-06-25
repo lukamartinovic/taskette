@@ -56,6 +56,11 @@ const api = {
         axios.post(endpoints.addProject, {token:token, name:name, users:users, description:description, company: "5d0d283a95283114b0a5df21"})
             .then((res)=>{callback(res)})
             .catch((err)=>{errorCallback(err)})
+    },
+    editProjectUsers(token, project, users, callback, errorCallback){
+        axios.post(endpoints.editProjectUsers, {token:token, project:project, users:users})
+            .then((res)=>{callback(res)})
+            .catch((err)=>{errorCallback(err)})
     }
 
 };
