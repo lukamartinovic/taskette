@@ -1,10 +1,12 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {Table} from "react-bootstrap";
+import CheckedUsers from "../../context/CheckedUsers";
 
 function UserTable(props){
+    const context = useContext(CheckedUsers);
+
     function handleCheck(e){
-       props.handleChangeUsers(e.target.name, e.target.checked)
-        console.log(props.checkedUsers)
+       context.setCheckedUsers(e.target.name, e.target.checked)
     }
 
     return(
@@ -27,7 +29,7 @@ function UserTable(props){
                         let key = index || email;
                         return (
                             <tr key={key}>
-                                {props.selectUsers ? <td className="text-center"><input checked={props.checkedUsers.includes(user._id)} name={user._id} onChange={handleCheck} type="checkbox"/></td> : <td style={{width:"3%"}} className="text-center" >{index && `${index}.`}</td>}
+                                {props.selectUsers ? <td className="text-center"><input checked={context.checkedUsers.users.includes(user._id)} name={user._id} onChange={handleCheck} type="checkbox"/></td> : <td style={{width:"3%"}} className="text-center" >{index && `${index}.`}</td>}
                                 <td style={{width:"30%"}} >{email}</td>
                                 <td style={{width:"28%"}} >{firstName}</td>
                                 <td style={{width:"29%"}} >{lastName}</td>
