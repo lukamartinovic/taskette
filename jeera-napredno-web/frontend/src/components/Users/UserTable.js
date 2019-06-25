@@ -1,15 +1,15 @@
 import React, {useContext} from 'react';
 import {Table} from "react-bootstrap";
-import CheckedUsers from "../../context/CheckedUsers";
+import ProjectContext from "../../context/ProjectContext";
 
 function UserTable(props){
-    const context = useContext(CheckedUsers);
-    function handleCheck(e){
-       context.setCheckedUsers(e.target.name, e.target.checked)
-    }
+    const context = useContext(ProjectContext);
+
+    function handleChange(id){
+        context.setNewUserList(id)
+    };
 
     return(
-
         <>{props.users.length !== 0 &&
             <Table responsive="lg" size="sm"  striped hover borderless>
                 <thead>
@@ -28,7 +28,7 @@ function UserTable(props){
                         let key = index || email;
                         return (
                             <tr key={key}>
-                                {props.selectUsers ? <td className="text-center"><input checked={context.checkedUsers.users.includes(user._id)} name={user._id} onChange={handleCheck} type="checkbox"/></td> : <td style={{width:"3%"}} className="text-center" >{index && `${index}.`}</td>}
+                                {props.selectUsers ? <td className="text-center"><input checked={context.projectContext.newUsersList.includes(user._id)} onChange={()=>{handleChange(user._id)}} name={user._id} type="checkbox"/></td> : <td style={{width:"3%"}} className="text-center" >{index && `${index}.`}</td>}
                                 <td style={{width:"30%"}} >{email}</td>
                                 <td style={{width:"28%"}} >{firstName}</td>
                                 <td style={{width:"29%"}} >{lastName}</td>
