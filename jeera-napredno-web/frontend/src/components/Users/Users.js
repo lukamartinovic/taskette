@@ -62,7 +62,7 @@ function Users(props){
             {props.search &&
             <UserSearch history={props.history} searching={searching} setSearching={(s)=>{setSearching(s); console.log(searching, s)}} setUsers={(users)=>{setUsers(users)}} pageSize={pageSize} setLoading={(l)=>{setLoading(l)}}/>}
             <Card.Body style={{height:`${pageSize*2.33}rem`, padding:"0"}}>
-                {loading ? <LoadingSpinner delay={delay} loading={loading}/> : <UserTable users={users}/>}
+                {loading ? <LoadingSpinner delay={delay} loading={loading}/> : <UserTable checkedUsers={props.checkedUsers} handleChangeUsers={props.handleChangeUsers} selectUsers={props.selectUsers} users={users}/>}
             </Card.Body >
             <Card.Footer>
                { renderPagination()}

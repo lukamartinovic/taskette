@@ -4,6 +4,7 @@ import api from "../../api/api";
 import {UserTable} from '../index'
 import moment from 'moment';
 import Markdown from 'markdown-to-jsx';
+import AddUserToProject from "./AddUserToProject";
 
 function ActiveProject(props){
 
@@ -38,18 +39,18 @@ function ActiveProject(props){
            (err) => {console.log(err)})
     },[props.project, tab, props.token]);
 
-    return(
+    return(<>
     <Card>
         <Card.Header>
             <Nav onSelect={changeTab} fill variant="tabs" activeKey={tab} defaultActiveKey="project">
                 <Nav.Item>
-                    <Nav.Link active={tab === "project"} eventKey="project">Project</Nav.Link>
+                    <Nav.Link style={{color:"inherit"}} active={tab === "project"} eventKey="project">Project</Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
-                    <Nav.Link active={tab === "users"} eventKey="users">Users</Nav.Link>
+                    <Nav.Link style={{color:"inherit"}} active={tab === "users"} eventKey="users">Users</Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
-                    <Nav.Link active={tab === "sprints"} eventKey="sprints">Sprints</Nav.Link>
+                    <Nav.Link style={{color:"inherit"}} active={tab === "sprints"} eventKey="sprints">Sprints</Nav.Link>
                 </Nav.Item>
             </Nav>
         </Card.Header>
@@ -60,6 +61,8 @@ function ActiveProject(props){
             {returnContent(tab)}
         </Card.Body>
     </Card>
+            <AddUserToProject history={props.history}/>
+    </>
 
     )
 }

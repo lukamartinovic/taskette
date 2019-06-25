@@ -23,7 +23,7 @@ function Projects(props){
     const handleProjectChange = debounce((project)=>{
         setActiveProject(project);
         props.history.push(`/projects/${project._id}`);
-    }, 350);
+    }, 150);
 
     useEffect(() => {
         let didCancel = false;

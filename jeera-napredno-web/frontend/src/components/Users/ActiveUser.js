@@ -17,7 +17,6 @@ function ActiveUser(props){
                     Role: {role.charAt(0).toUpperCase() + role.substring(1).toLowerCase()}<br/>
                     Created on: {moment(created).format('DD.MM.YYYY HH:mm:ss')}
                 </Card.Text>
-
             </Card.Body>
         </Card>
     )
