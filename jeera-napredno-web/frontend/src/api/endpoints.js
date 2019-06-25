@@ -12,7 +12,8 @@ const endpoints = {
     getProjects: `${host}/projects`,
     getUsersById: `${host}/user/getUsers`,
     addProject: `${host}/project/add`,
-    editProjectUsers: `${host}/project/editUsers`
+    editProjectUsers: `${host}/project/editUsers`,
+    addSprint: `${host}/sprint/add`
 };
 
 export default endpoints;

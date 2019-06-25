@@ -1,17 +1,19 @@
 import {Button, Card, Nav} from "react-bootstrap";
 import React, {useContext, useEffect, useState} from "react";
 import api from "../../api/api";
-import {UserTable} from '../index'
+import {AddSprint, AddUserToProject, UserTable} from '../'
 import moment from 'moment';
 import Markdown from 'markdown-to-jsx';
-import AddUserToProject from "./AddUserToProject";
 import ProjectContext from "../../context/ProjectContext";
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faCalendarAlt, faUsers} from '@fortawesome/free-solid-svg-icons';
+
 
 function ActiveProject(props){
     const [users, setUsers] = useState();
     const [tab, setTab] = useState("project");
     const [addUserDialog, setAddUserDialog] = useState(false);
-
+    const [addSprintDialog, setAddSprintDialog] = useState(false);
     const project = useContext(ProjectContext).projectContext.activeProject;
 
     function changeTab(tab){
@@ -28,11 +30,6 @@ function ActiveProject(props){
                         <Markdown>{project.description}</Markdown>
                     </div>
                 </>)
-        }
-        if(tab === "users"){
-            return(
-                <><Button onClick={()=>{setAddUserDialog(true)}}>Add users</Button>{users && <UserTable users={users}/>}</>
-            )
         }
     };
 
@@ -60,11 +57,15 @@ function ActiveProject(props){
         <Card.Body>
             <Card.Title>
                 {project.name}
+                {tab === "users" && <><Button variant="light" className="ml-4" onClick={()=>{setAddUserDialog(true)}}>Edit users&nbsp;&nbsp;<FontAwesomeIcon icon={faUsers}/></Button></>}
+                {tab === "sprints" && <><Button variant="light" className="ml-4" onClick={()=>{setAddSprintDialog(true)}}>Add sprint&nbsp;&nbsp;<FontAwesomeIcon icon={faCalendarAlt}/></Button></>}
             </Card.Title>
+            {tab === "users" && users && <UserTable users={users}/>}
             {returnContent(tab)}
         </Card.Body>
     </Card>
             <AddUserToProject show={addUserDialog} handleClose={()=>{setAddUserDialog(!addUserDialog)}}/>
+            <AddSprint show={addSprintDialog} handleClose={()=>{setAddSprintDialog(!addSprintDialog)}}/>
     </>
 
     )

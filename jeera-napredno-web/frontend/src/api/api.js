@@ -61,6 +61,11 @@ const api = {
         axios.post(endpoints.editProjectUsers, {token:token, project:project, users:users})
             .then((res)=>{callback(res)})
             .catch((err)=>{errorCallback(err)})
+    },
+    addSprint(token, project, points, startDate, endDate, callback, errorCallback){
+        axios.post(endpoints.addSprint, {token:token, project:project, startDate:startDate, endDate:endDate, points:points})
+            .then((res)=>{callback(res)})
+            .catch((err)=>{errorCallback(err)})
     }
 
 };

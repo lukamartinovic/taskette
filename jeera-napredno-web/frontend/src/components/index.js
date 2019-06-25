@@ -15,3 +15,4 @@ export { default as Projects } from './Projects/Projects';
 export { default as ActiveProject } from './Projects/ActiveProject';
 export { default as AddProject } from './Projects/AddProject'
 export { default as AddUserToProject } from './Projects/AddUserToProject';
+export { default as AddSprint } from './Sprints/AddSprint'
