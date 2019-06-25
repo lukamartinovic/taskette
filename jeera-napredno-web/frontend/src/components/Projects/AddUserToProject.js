@@ -8,6 +8,7 @@ import ProjectContext from "../../context/ProjectContext";
 function AddUserToProject(props){
     const token = useContext(AuthContext).authentication.token;
     const projectContext = useContext(ProjectContext);
+    const users = projectContext.projectContext.activeProject.users;
 
     function handleSubmit(e){
         e.stopPropagation();
