@@ -10,7 +10,7 @@ import {AddProject} from "../index";
 import ProjectContext from '../../context/ProjectContext'
 import {pull} from 'lodash';
 
-function Projects(props){
+function ProjectsAdministration(props){
     const context = useContext(AuthContext).authentication;
     const [projectContext, setProjectContext] = useState({projects:[], activeProject: {}, newUsersList: []});
     const [page, setPage] = useState(1);
@@ -92,4 +92,4 @@ function Projects(props){
     </ProjectContext.Provider>)
 }
 
-export default Projects;
+export default ProjectsAdministration;

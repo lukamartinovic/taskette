@@ -1,7 +1,7 @@
 import {Button, Card, Nav} from "react-bootstrap";
 import React, {useContext, useEffect, useState} from "react";
 import api from "../../api/api";
-import {AddSprint, AddUserToProject, UserTable} from '../'
+import {AddSprint, AddUserToProject, SprintTable, UserTable} from '../'
 import moment from 'moment';
 import Markdown from 'markdown-to-jsx';
 import ProjectContext from "../../context/ProjectContext";
@@ -14,8 +14,8 @@ function ActiveProject(props){
     const [tab, setTab] = useState("project");
     const [addUserDialog, setAddUserDialog] = useState(false);
     const [addSprintDialog, setAddSprintDialog] = useState(false);
-    const project = useContext(ProjectContext).projectContext.activeProject;
-
+    const context = useContext(ProjectContext);
+    const project = context.projectContext.activeProject;
     function changeTab(tab){
         setTab(tab);
     }
@@ -37,7 +37,7 @@ function ActiveProject(props){
        api.getUsersById(props.token, project.users,
            (res)=>{setUsers(res.data)},
            (err) => {console.log(err.response.data)})
-    },[tab, props.token, project, addUserDialog]);
+    },[tab, props.token, project, addUserDialog, addSprintDialog]);
 
     return(<>
     <Card>
@@ -61,11 +61,12 @@ function ActiveProject(props){
                 {tab === "sprints" && <><Button variant="light" className="ml-4" onClick={()=>{setAddSprintDialog(true)}}>Add sprint&nbsp;&nbsp;<FontAwesomeIcon icon={faCalendarAlt}/></Button></>}
             </Card.Title>
             {tab === "users" && users && <UserTable users={users}/>}
+            {tab === "sprints" && <SprintTable sprints={project.sprints}/>}
             {returnContent(tab)}
         </Card.Body>
     </Card>
-            <AddUserToProject show={addUserDialog} handleClose={()=>{setAddUserDialog(!addUserDialog)}}/>
-            <AddSprint show={addSprintDialog} handleClose={()=>{setAddSprintDialog(!addSprintDialog)}}/>
+            <AddUserToProject show={addUserDialog} handleClose={()=>{setAddUserDialog(!addUserDialog);}}/>
+            <AddSprint show={addSprintDialog} handleClose={()=>{setAddSprintDialog(!addSprintDialog);}}/>
     </>
 
     )

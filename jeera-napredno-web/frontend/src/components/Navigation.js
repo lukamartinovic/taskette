@@ -21,7 +21,7 @@ function Navigation(props){
                 <LinkContainer to={"/tasks"}>
                     <Nav.Link>Tasks</Nav.Link>
                 </LinkContainer>
-                {context.authentication.role === "ADMIN" ?
+                {context.authentication.role === "ADMIN" &&
                     <>
                     <LinkContainer to={"/users"}>
                         <Nav.Link>Users</Nav.Link>
@@ -32,8 +32,17 @@ function Navigation(props){
                     <LinkContainer to={"/sprints"}>
                     <Nav.Link>Sprints</Nav.Link>
                     </LinkContainer>
-                    </>:
-                    <></>
+                    </>
+                }
+                {context.authentication.role === "MANAGER" &&
+                    <>
+                        <LinkContainer to={"/projects"}>
+                            <Nav.Link>Projects</Nav.Link>
+                        </LinkContainer>
+                        <LinkContainer to={"/sprints"}>
+                            <Nav.Link>Sprints</Nav.Link>
+                        </LinkContainer>
+                    </>
                 }
             </Nav>
             <Nav className="ml-auto">

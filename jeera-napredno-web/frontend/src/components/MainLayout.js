@@ -16,7 +16,7 @@ function MainLayout(){
                     </Switch>
                 </Route>
                 <Route path="/users" render={(props)=>{return <Users {...props} search/>}}/>
-                <Route path="/Sprints" render={(props)=>{return <Sprints {...props} search/>}}/>
+                <Route path="/sprints" render={(props)=>{return <Sprints {...props} search/>}}/>
                 <Route path="/projects" render={(props)=>{return <Projects {...props} search/>}}/>
                 <Route render={()=>{return <NotFound error={404}/>}}/>
             </Switch>

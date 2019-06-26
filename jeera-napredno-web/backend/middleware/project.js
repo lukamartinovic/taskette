@@ -33,6 +33,9 @@ module.exports.addProject = async function (req, res, next) {
 
 module.exports.editProjectUsers = async function (req, res, next) {
     try{
+        const payload = await jwt.verify(req.body.token, process.env.SECRET);
+        if(payload.role !== "ADMIN")
+            throw new Error("401");
     const project = await Project.updateOne(
         { _id: req.body.project },
         { $set: { users: req.body.users }}).catch((err) => {return next(err)})

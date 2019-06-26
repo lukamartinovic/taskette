@@ -6,7 +6,7 @@ import {AuthContext, ProjectContext} from '../../context/'
 function AddSprint(props){
     const project_id = useContext(ProjectContext).projectContext.activeProject._id;
     const token = useContext(AuthContext).authentication.token;
-    const [values, setValues] = useState({startDate: "2019-01-01", endDate: "2019-01-07", points: 20, name:"Sprint name"});
+    const [values, setValues] = useState({startDate: "2019-01-01", endDate: "2019-01-07", points: 20, name:""});
     const [submitting, setSubmitting] = useState(false);
     const [success, setSuccess] = useState(false);
 
@@ -47,7 +47,7 @@ function AddSprint(props){
                 <Form>
                 <Form.Group controlId="startDate">
                     <Form.Label>Name</Form.Label>
-                    <input value={values.name} onChange={handleChange} name="name" type="text" max={40} required className="form-control date"/>
+                    <input placeholder={"Name"} value={values.name} onChange={handleChange} name="name" type="text" max={40} required className="form-control date"/>
                     {values.name === "" && <Form.Text className="text-danger">Name is required</Form.Text>}
                 </Form.Group>
                 <Form.Group controlId="startDate">
