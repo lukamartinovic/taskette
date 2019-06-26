@@ -20,7 +20,6 @@ export { default as AddTask } from './Tasks/AddTask';
 export { default as Sprints } from './Sprints/Sprints';
 export { default as Sprint } from './Sprints/Sprint';
 export { default as SprintTable } from './Sprints/SprintTable';
-export { default as PrivateRoute } from './PrivateRoute';
 export { default as MyTasks } from './Tasks/MyTasks';
 export { default as WelcomeJumbotron } from './WelcomeJumbotron';
 export { default as Projects } from './Projects/Projects';

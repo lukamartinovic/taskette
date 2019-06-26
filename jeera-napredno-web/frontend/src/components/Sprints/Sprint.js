@@ -28,7 +28,7 @@ function Sprint(props){
                     }
                     if(index < 4)
                         return <ListGroup.Item  key={task._id} style={{borderLeftColor: accentColor(task.status), borderLeftWidth: "2px"}}>{task.name}</ListGroup.Item>
-                    else return;
+                    else{return null};
 
                 })}
             </ListGroup>
