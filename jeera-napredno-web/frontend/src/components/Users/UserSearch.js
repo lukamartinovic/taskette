@@ -1,4 +1,4 @@
-import {Card, Form, InputGroup} from "react-bootstrap";
+import {Form, InputGroup} from "react-bootstrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSearch, faUserPlus} from "@fortawesome/free-solid-svg-icons";
 import React, {useContext} from "react";
@@ -25,11 +25,11 @@ function UserSearch(props){
                 (res)=>{
                 props.setUsers(res.data);
                 props.setLoading(false);
-                })
+                }, (req) =>{})
         }
     }
 
-    return (<Card.Header>
+    return (
         <Form inline>
             <InputGroup style={{width: "100%"}}>
                 <InputGroup.Prepend>
@@ -40,14 +40,13 @@ function UserSearch(props){
                     placeholder="Email"
                     onChange={e => {handleChange(e.target.value)}}
                 />
-                <InputGroup.Append>
+                {props.addUserButton && <InputGroup.Append>
                     <InputGroup.Text style={{cursor: "pointer"}} onClick={() => {
                         props.history.push("/users/createUser")
                     }}><FontAwesomeIcon icon={faUserPlus}/></InputGroup.Text>
-                </InputGroup.Append>
+                </InputGroup.Append>}
             </InputGroup>
-        </Form>
-    </Card.Header>)
+        </Form>)
 
 }
 

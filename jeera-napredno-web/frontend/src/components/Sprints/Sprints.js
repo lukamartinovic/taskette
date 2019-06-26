@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import api from '../../api/api'
 import {AuthContext} from '../../context/'
-import {Sprint} from "../index";
+import {AddTask, Sprint} from "../index";
 import {CardDeck} from 'react-bootstrap'
 
 function Sprints(props){
@@ -17,7 +17,10 @@ function Sprints(props){
         {sprints.map(sprint => {
             return <Sprint key={sprint._id} sprint={sprint}/>
         })}
-    </CardDeck></>)
+    </CardDeck>
+            <AddTask sprint={sprints[0]} token={token}/>
+            </>
+    )
 }
 
 export default Sprints;

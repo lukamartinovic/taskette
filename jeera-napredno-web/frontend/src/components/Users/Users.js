@@ -59,8 +59,9 @@ function Users(props){
     function UsersPanel(){
         return(
         <Card size="sm" className="text-center" >
-            {props.search &&
-            <UserSearch history={props.history} searching={searching} setSearching={(s)=>{setSearching(s); console.log(searching, s)}} setUsers={(users)=>{setUsers(users)}} pageSize={pageSize} setLoading={(l)=>{setLoading(l)}}/>}
+            <Card.Header>{props.search &&
+            <UserSearch addUserButton history={props.history} searching={searching} setSearching={(s)=>{setSearching(s); console.log(searching, s)}} setUsers={(users)=>{setUsers(users)}} pageSize={pageSize} setLoading={(l)=>{setLoading(l)}}/>}
+            </Card.Header>
             <Card.Body style={{height:`${pageSize*2.33}rem`, padding:"0"}}>
                 {loading ? <LoadingSpinner delay={delay} loading={loading}/> : <UserTable checkedUsers={props.checkedUsers} handleChangeUsers={props.handleChangeUsers} selectUsers={props.selectUsers} users={users}/>}
             </Card.Body >

@@ -1,6 +1,8 @@
 import React from 'react';
-import {Card, ListGroup} from 'react-bootstrap';
+import {Button, Card, ListGroup} from 'react-bootstrap';
 import moment from 'moment';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faPlus, faTasks} from "@fortawesome/free-solid-svg-icons";
 
 function Sprint(props){
     function accentColor(status){
@@ -12,7 +14,7 @@ function Sprint(props){
     console.log(props.sprint);
     return(<Card style={{maxWidth: "35vh", minWidth: "25vh"}}>
         <Card.Header>
-            <Card.Text>{props.sprint.name}</Card.Text>
+            <Card.Text>{props.sprint.name} <Button  style={{borderColor:"lightgray", marginLeft:"1em"}} variant="light"><FontAwesomeIcon icon={faPlus} size="xs"/>&nbsp;<FontAwesomeIcon icon={faTasks}/></Button></Card.Text>
         </Card.Header>
         <Card.Body>
             <ListGroup>

@@ -55,12 +55,12 @@ function AddProject({values, errors, handleChange, handleSubmit, validationSchem
                 <Form noValidate onSubmit={handleSubmit}>
                     <Form.Group controlId="name">
                         <Form.Label >Project name</Form.Label>
-                        <Form.Control value={name} onChange={handleChange} as="input"/>
+                        <Form.Control placeholder={"Name"} value={name} onChange={handleChange} as="input"/>
                         {touched.name && errors.name && <Form.Text className="text-danger">{errors.name}</Form.Text>}
                     </Form.Group>
                     <Form.Group controlId="description">
                         <Form.Label >Project description</Form.Label>
-                        <Form.Control value={description} onChange={handleChange} as="textarea"/>
+                        <Form.Control placeholder={"Description"} value={description} onChange={handleChange} as="textarea"/>
                         {touched.description && errors.description && <Form.Text className="text-danger">{errors.description}</Form.Text>}
                     </Form.Group>
                     <Form.Group controlId="preview">

@@ -14,7 +14,8 @@ const endpoints = {
     addProject: `${host}/project/add`,
     editProjectUsers: `${host}/project/editUsers`,
     addSprint: `${host}/sprint/add`,
-    getSprints: `${host}/sprints`
+    getSprints: `${host}/sprints`,
+    addTask: `${host}/task/add`
 };
 
 export default endpoints;
