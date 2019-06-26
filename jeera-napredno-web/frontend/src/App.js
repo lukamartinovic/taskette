@@ -12,8 +12,8 @@ function App() {
 
     const contextValue = {
         authentication,
-        authenticate: (loggedIn, token, email, level, _id, role) => {
-            const authentication = {loggedIn: loggedIn, token: token, email: email, level: level, _id: _id, role: role}
+        authenticate: (loggedIn, token, email, level, _id, role, firstName) => {
+            const authentication = {loggedIn: loggedIn, token: token, email: email, level: level, _id: _id, role: role, firstName: firstName}
             setAuth(authentication);
             sessionStorage.setItem("JWT", JSON.stringify(authentication.token))
         }
@@ -24,8 +24,8 @@ function App() {
         storedToken ? api.validateToken(
             storedToken,
             (res) => {
-                const {level, role, email, id} = res.data;
-                setAuth({loggedIn: true, token: storedToken, email: email, level: level, _id: id, role:role})
+                const {level, role, email, id, firstName} = res.data;
+                setAuth({loggedIn: true, token: storedToken, email: email, level: level, _id: id, role:role, firstName:firstName})
             },
             (err) => {setAuth(true)}
         ) : setAuth(true);

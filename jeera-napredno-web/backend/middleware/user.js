@@ -43,12 +43,12 @@ module.exports.login = async function (req, res, next) {
          const compare = await bcrypt.compare(req.body.password, user.password);
          if(!compare) throw loginErr;
          const token = jwt.sign(
-             {email:user.email, role: user.role, level: user.level, id: user._id},
+             {email:user.email, role: user.role, level: user.level, id: user._id, firstName: user.firstName},
              process.env.SECRET,
              {expiresIn:"1d"}
 
          );
-         res.send({token, level: user.level, email: user.email, _id: user._id, role: user.role});
+         res.send({token, level: user.level, email: user.email, _id: user._id, role: user.role, firstName: user.firstName});
      }
      catch(err){return next(new Error("401"))}
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Container} from 'react-bootstrap'
-import {MyTasks, NotFound, Projects, Sprints, Tasks, Users} from './'
+import {MyTasks, NotFound, Projects, Sprints, Tasks, Users, WelcomeJumbotron} from './'
 import {Route, Switch} from 'react-router-dom'
 
 
@@ -8,6 +8,7 @@ function MainLayout(){
     return(
         <Container style={{height:"1000px", marginTop:"1em"}}>
             <Switch>
+                <Route exact path="/" render={(props)=>{return <WelcomeJumbotron {...props} search/>}}/>
                 <Route path="/tasks" component={Tasks}>
                     <Switch>
                     <Route exact path="/tasks/" component={Tasks}/>

@@ -13,7 +13,7 @@ function Navigation(props){
 
     return(
         <Navbar bg="dark" variant="dark">
-            <Navbar.Brand>Jeera</Navbar.Brand>
+            <Navbar.Brand>Taskette</Navbar.Brand>
             <Nav className="mr-auto">
                 <LinkContainer to={"/"}>
                     <Nav.Link>Home</Nav.Link>
@@ -41,7 +41,7 @@ function Navigation(props){
                         </LinkContainer>
                     </>
                 }
-                {context.authentication.role === "USER" &&
+                {context.authentication.role === "EMPLOYEE" &&
                 <>
                     <LinkContainer to={"/mytasks"}>
                         <Nav.Link>Tasks</Nav.Link>
