@@ -35,6 +35,7 @@ router.post('/project/:id/addSprint', project.addSprint, errorHandler);
 
 
 router.post('/sprint/add', sprint.addSprint, errorHandler);
+router.post('/sprints', sprint.getSprints, errorHandler);
 
 router.post('/company/add', company.addCompany, errorHandler);
 

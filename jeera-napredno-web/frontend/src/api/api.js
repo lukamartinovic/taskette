@@ -62,8 +62,13 @@ const api = {
             .then((res)=>{callback(res)})
             .catch((err)=>{errorCallback(err)})
     },
-    addSprint(token, project, points, startDate, endDate, callback, errorCallback){
-        axios.post(endpoints.addSprint, {token:token, project:project, startDate:startDate, endDate:endDate, points:points})
+    addSprint(token, project, points, startDate, endDate, name, callback, errorCallback){
+        axios.post(endpoints.addSprint, {token:token, project:project, startDate:startDate, endDate:endDate, points:points, name:name})
+            .then((res)=>{callback(res)})
+            .catch((err)=>{errorCallback(err)})
+    },
+    getSprints(token, callback, errorCallback){
+        axios.post(endpoints.getSprints, {token:token})
             .then((res)=>{callback(res)})
             .catch((err)=>{errorCallback(err)})
     }

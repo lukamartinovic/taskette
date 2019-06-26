@@ -15,4 +15,8 @@ export { default as Projects } from './Projects/Projects';
 export { default as ActiveProject } from './Projects/ActiveProject';
 export { default as AddProject } from './Projects/AddProject'
 export { default as AddUserToProject } from './Projects/AddUserToProject';
-export { default as AddSprint } from './Sprints/AddSprint'
+export { default as AddSprint } from './Sprints/AddSprint';
+export { default as AddTask } from './Tasks/AddTask';
+export { default as Sprints } from './Sprints/Sprints';
+export { default as Sprint } from './Sprints/Sprint';
+export { default as SprintTable } from './Sprints/SprintTable';

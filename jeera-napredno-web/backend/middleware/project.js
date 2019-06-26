@@ -24,7 +24,7 @@ module.exports.addProject = async function (req, res, next) {
         if(payload.role !== "ADMIN")
             throw new Error("401");
         const savedProject = await newProject.save();
-        await Company.updateOne(
+        Company.updateOne(
             {_id:newProject.company},
             {$push: {projects: savedProject._id}});
         res.send(savedProject);
@@ -47,7 +47,7 @@ module.exports.getProjects = async function (req, res, next) {
         const payload = await jwt.verify(token, process.env.SECRET);
         //TODO: add authorization
         const [projects, count] = await Promise.all([
-            Project.find({}).skip(pageSize*(page-1)).limit(pageSize),
+            Project.find({}).populate("sprints").skip(pageSize*(page-1)).limit(pageSize),
             Project.countDocuments()
         ]);
         res.send({projects, count});
@@ -59,7 +59,7 @@ module.exports.addSprint = function (req, res) {
 
     Project.updateOne(
         { _id: req.params.id },
-        { $addToSet: { sprints: { $each: req.body.sprints }}},
+        { $addToSet: { sprints: { $each: [req.body.sprints] }}},
         function (err, project) {
             if(err) {
                 return res.status(400).send(err);

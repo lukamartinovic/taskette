@@ -47,7 +47,7 @@ function AddProject({values, errors, handleChange, handleSubmit, validationSchem
     useEffect(() => {setStatus({success:false})}, [values, touched, setStatus]);
 
     return(
-        <Modal size="lg" onHide={()=>{props.history.push('/projects/')}} show>
+        <Modal size="lg" onHide={()=>{props.history.push('/projects/'); props.handleClose()}} show>
             <Modal.Header closeButton>
                 <Modal.Title>Create project</Modal.Title>
             </Modal.Header>

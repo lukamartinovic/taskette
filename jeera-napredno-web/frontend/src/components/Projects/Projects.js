@@ -16,6 +16,7 @@ function Projects(props){
     const [page, setPage] = useState(1);
     const [pages, setPages] = useState(5);
     const [loading, setLoading] = useState(true);
+    const [showProjectDialog, setProjectDialog] = useState(false);
 
     function setContextValue(context){
         setProjectContext(context);
@@ -49,7 +50,7 @@ function Projects(props){
             });
         return () => {didCancel = true}
         // eslint-disable-next-line
-    }, [page, pages, pageSize, context.token]);
+    }, [page, pages, pageSize, context.token, showProjectDialog]);
 
     function renderPagination(){
         return(
@@ -87,7 +88,7 @@ function Projects(props){
         </Col>
         </Row>
         </Tab.Container>
-        <Route path="/projects/addProject" render={(props)=>{return <AddProject {...props} token={context.token}/>}}/>
+        <Route path="/projects/addProject" render={(props)=>{return <AddProject {...props} handleClose={()=>{setProjectDialog(!showProjectDialog)}} token={context.token}/>}}/>
     </ProjectContext.Provider>)
 }
 

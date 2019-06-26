@@ -19,10 +19,10 @@ const ProjectSchema = new Schema({
         ref: "Company",
         required: true
     },
-    sprints: {
+    sprints: [{
         type: Schema.Types.ObjectId,
         ref: "Sprint"
-    },
+    }],
     created: {
         type: Date,
         default: Date.now

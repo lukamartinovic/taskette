@@ -8,6 +8,10 @@ function validateStartDate(startDate){
 }
 
 const SprintSchema = mongoose.Schema({
+    name:{
+      type: String,
+      required: true
+    },
     project: {
         type: Schema.Types.ObjectId,
         ref: "Project",

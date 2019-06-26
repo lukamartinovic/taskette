@@ -37,13 +37,16 @@ function Tasks(props){
     return(
         <Container>
             <Row>
+
                 <Col md={4}>
                     {tasks.map((task) =>
-                        <Task task={task}
+                        <Task active
+                            truncate
+                                task={task}
                               key={task._id}
                               activateTask={activateTask}/>)
                     }
-                </Col>
+                    </Col>
                 <Col md={8}>
                     <Container>
                         {activeTask ?

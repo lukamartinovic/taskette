@@ -13,7 +13,8 @@ const endpoints = {
     getUsersById: `${host}/user/getUsers`,
     addProject: `${host}/project/add`,
     editProjectUsers: `${host}/project/editUsers`,
-    addSprint: `${host}/sprint/add`
+    addSprint: `${host}/sprint/add`,
+    getSprints: `${host}/sprints`
 };
 
 export default endpoints;

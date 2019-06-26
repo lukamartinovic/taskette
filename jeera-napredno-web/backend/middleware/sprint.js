@@ -9,6 +9,7 @@ const jwt = require('jsonwebtoken');
 module.exports.addSprint = async function (req, res, next) {
     const newSprint = new Sprint(
         {
+            name: req.body.name,
             project: req.body.project,
             points: req.body.points,
             startDate: req.body.startDate,
@@ -17,13 +18,24 @@ module.exports.addSprint = async function (req, res, next) {
     );
 
     try {
-        console.log(newSprint)
         const payload = await jwt.verify(req.body.token, process.env.SECRET);
         if(payload.role !== "ADMIN")
             throw new Error("401");
-        await newSprint.save();
-        Project.updateOne({_id: req.body.project}, {$push: {sprints: newSprint._id}});
+        const savedSprint = await newSprint.save();
+        const updatedProject = await Project.updateOne(
+            {_id: savedSprint.project},
+            {$push: {sprints: savedSprint._id}});
         return res.send(newSprint);
+    } catch (err) {
+        return next(err)
+    }
+
+};
+
+module.exports.getSprints = async function (req, res, next) {
+    try {
+        const sprints = await Sprint.find({}).populate("tasks");
+        return res.send(sprints);
     } catch (err) {
         return next(err)
     }
