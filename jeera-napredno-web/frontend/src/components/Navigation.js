@@ -46,6 +46,9 @@ function Navigation(props){
                     <LinkContainer to={"/mytasks"}>
                         <Nav.Link>Tasks</Nav.Link>
                     </LinkContainer>
+                    <LinkContainer to={"/projects"}>
+                        <Nav.Link>Projects</Nav.Link>
+                    </LinkContainer>
                 </>
                 }
             </Nav>

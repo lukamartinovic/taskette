@@ -76,6 +76,11 @@ const api = {
         axios.post(endpoints.addTask, {token: token, user:user, email:email, name:name, description:description, points:points, sprint:sprint, due:due})
             .then((res) => callback(res))
             .catch((err) => errorCallback(err.response.data))
+    },
+    getSubEmployees(token, callback, errorCallback){
+        axios.post(endpoints.getEmployees, {token:token})
+            .then((res)=>{callback(res)})
+            .catch((err)=>{errorCallback(err)})
     }
 
 };

@@ -1,10 +1,16 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {Container} from 'react-bootstrap'
-import {MyTasks, NotFound, Projects, Sprints, Tasks, Users, WelcomeJumbotron} from './'
+import {MyTasks, Projects, Sprints, Tasks, Users, WelcomeJumbotron} from './'
 import {Route, Switch} from 'react-router-dom'
+import {AuthContext} from '../context';
+import ErrorScreen from "./ErrorScreen";
+import ProjectsAdministration from "./Projects/ProjectsAdministration";
 
+//TODO: remake all routing and authorization related code
 
 function MainLayout(){
+    const role = useContext(AuthContext).authentication.role;
+
     return(
         <Container style={{height:"1000px", marginTop:"1em"}}>
             <Switch>
@@ -13,14 +19,20 @@ function MainLayout(){
                     <Switch>
                     <Route exact path="/tasks/" component={Tasks}/>
                     <Route exact path="/tasks/:id" component={Tasks}/>
-                    <Route path="/tasks/*" render={()=>{return <NotFound error={404}/>}}/>
+                    <Route path="/tasks/*" render={()=>{return <ErrorScreen error={404}/>}}/>
                     </Switch>
                 </Route>
-                <Route path="/users" render={(props)=>{return <Users {...props} search/>}}/>
+                <Route path="/users" render={(props)=>{return role === "ADMIN" ? <Users {...props} search/> : <ErrorScreen error={401}/>}}/>
                 <Route path="/mytasks" render={(props)=>{return <MyTasks {...props} search/>}}/>
-                <Route path="/sprints" render={(props)=>{return <Sprints {...props} search/>}}/>
-                <Route path="/projects" render={(props)=>{return <Projects {...props} search/>}}/>
-                <Route render={()=>{return <NotFound error={404}/>}}/>
+                <Route path="/sprints" render={(props)=>{return role === "MANAGER" ? <Sprints {...props} search/> : <ErrorScreen error={401}/>}}/>
+                <Route path="/projects" render={(props)=>{
+                    if(role === "ADMIN"){
+                    return <ProjectsAdministration {...props} search/>}
+                    if(role === "MANAGER")
+                    return <Projects {...props} search/>
+                    if(role === "EMPLOYEE")
+                        return <Projects {...props} search/>}}/>
+                <Route render={()=>{return <ErrorScreen error={404}/>}}/>
             </Switch>
         </Container>
     )

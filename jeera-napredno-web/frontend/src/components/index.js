@@ -9,9 +9,9 @@ export { default as ActiveUser } from './Users/ActiveUser';
 export { default as AddUser } from './Users/AddUser';
 export { default as UserTable } from './Users/UserTable';
 export { default as LoadingSpinner } from './LoadingSpinner';
-export { default as NotFound } from './ErrorScreen';
+export { default as ErrorScreen } from './ErrorScreen';
 export { default as UserSearch } from './Users/UserSearch';
-export { default as Projects } from './Projects/ProjectsAdministration';
+export { default as ProjectsAdministration } from './Projects/ProjectsAdministration';
 export { default as ActiveProject } from './Projects/ActiveProject';
 export { default as AddProject } from './Projects/AddProject'
 export { default as AddUserToProject } from './Projects/AddUserToProject';
@@ -23,3 +23,4 @@ export { default as SprintTable } from './Sprints/SprintTable';
 export { default as PrivateRoute } from './PrivateRoute';
 export { default as MyTasks } from './Tasks/MyTasks';
 export { default as WelcomeJumbotron } from './WelcomeJumbotron';
+export { default as Projects } from './Projects/Projects';

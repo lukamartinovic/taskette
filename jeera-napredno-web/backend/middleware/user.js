@@ -5,6 +5,19 @@ const bcrypt = require('bcrypt');
 const User = mongoose.model('User', require('../schema/User'));
 const Task = mongoose.model('Task', require('../schema/Task'));
 
+module.exports.getSubEmployees = async function (req, res, next) {
+    try{
+        const {token, searchString, n} = req.body;
+        const payload = await jwt.verify(token, process.env.SECRET);
+        if (payload.role !== "MANAGER")
+            throw new Error("401");
+        const users = await User.find({
+            $or: [{role: "EMPLOYEE"}, {$and:[{role:"MANAGER"}, {level: { $gt: payload.level}}]}]
+        });
+        res.send(users);
+    }catch(err) {return next(err)}
+};
+
 module.exports.addUser = async function (req, res, next) {
 
     const newUser =

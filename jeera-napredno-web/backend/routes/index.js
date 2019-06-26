@@ -22,10 +22,11 @@ router.post('/user/tasks', user.authenticate, user.showTasks, errorHandler);
 router.post('/user/getid', user.getId, errorHandler);
 router.post('/user/validateToken', user.validateToken, errorHandler);
 router.post('/user/search', user.searchUsers, errorHandler);
+router.post('/user/getEmployees', user.authenticate, user.getSubEmployees, errorHandler)
 
-router.post('/task/add', task.addTask, errorHandler);
+router.post('/task/add', user.authenticate, task.addTask, errorHandler);
 router.delete('/task/:id/', task.removeTask, errorHandler);
-router.post('/task/edit', task.editTask, errorHandler);
+router.post('/task/edit', user.authenticate, task.editTask, errorHandler);
 router.post('/task/changeStatus', user.authenticate, task.changeTaskStatus, errorHandler)
 
 router.post('/project/add', project.addProject, errorHandler);
