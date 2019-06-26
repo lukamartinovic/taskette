@@ -27,7 +27,7 @@ function handleSubmit(values, {resetForm, setErrors, setSubmitting, props, setSt
     }
     setSubmitting(false);
   }
-  api.addTask(token, undefined, values.user, values.name, values.description, values.points, props.sprint._id, callback, errorCallback)
+  api.addTask(token, undefined, values.user, values.name, values.description, values.points, props.sprint.endDate, props.sprint._id, callback, errorCallback)
 }
 
 const AddTaskFormik = withFormik({
@@ -49,11 +49,11 @@ const AddTaskFormik = withFormik({
   validationSchema
 })(AddTask);
 
-function AddTask({values, errors, handleChange, handleSubmit, validationSchema, touched, isSubmitting, status, setStatus, ...props}){
+function AddTask({values, errors, handleChange, handleSubmit, resetForm, validationSchema, touched, isSubmitting, status, setStatus, ...props}){
   const {name, description, points, user, preview} = values;
   useEffect(() => {setStatus({success:false}); console.log(values)}, [values, touched, setStatus]);
   return(
-      <Modal onHide={props.handleHide} size="xl" show={props.show}>
+      <Modal onHide={()=>{props.handleHide(); setStatus({success:false}); resetForm();}} size="xl" show={props.show}>
         <Modal.Header closeButton><Modal.Title>{`Create task in ${props.sprint.name}`}</Modal.Title></Modal.Header>
         <Modal.Body>
           <Form noValidate onSubmit={handleSubmit}>
@@ -83,11 +83,11 @@ function AddTask({values, errors, handleChange, handleSubmit, validationSchema, 
               <Form.Control placeholder="User email" value={user} onChange={handleChange} as="input"/>
               {touched.user && errors.user && <Form.Text className="text-danger">{errors.user}</Form.Text>}
             </FormGroup>
-            {status.success ?
-                <Alert variant="success" className="w-100 text-center">Task successfully created!</Alert>:
+            {status.success &&
+                <Alert variant="success" className="w-100 text-center">Task successfully created!</Alert>}
                 <Button block disabled={isSubmitting} variant="primary" type="submit">
                   Submit
-                </Button>}
+                </Button>
           </Form>
         </Modal.Body>
         <Modal.Footer className="">

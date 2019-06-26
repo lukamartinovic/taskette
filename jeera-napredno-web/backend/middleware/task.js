@@ -17,6 +17,7 @@ module.exports.addTask = async function (req, res, next) {
         }
         const newTask = new Task(
             {
+                due: req.body.due,
                 name: req.body.name,
                 description: req.body.description,
                 points: req.body.points,

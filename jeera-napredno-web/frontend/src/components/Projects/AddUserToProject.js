@@ -23,7 +23,7 @@ function AddUserToProject(props){
     }
 
     return(<>
-        <Modal style={{padding:"0"}} size="xl" show={props.show} onHide={()=>{props.handleClose()}}>
+        <Modal style={{padding:"0"}} size="xl" show={props.show} onHide={()=>{props.handleClose(); setSuccess(false)}}>
             <Modal.Header closeButton>
                 <Modal.Title>Project users</Modal.Title>
             </Modal.Header>

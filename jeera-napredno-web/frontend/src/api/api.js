@@ -72,8 +72,8 @@ const api = {
             .then((res)=>{callback(res)})
             .catch((err)=>{errorCallback(err)})
     },
-    addTask(token, user, email, name, description, points, sprint, callback, errorCallback){
-        axios.post(endpoints.addTask, {token: token, user:user, email:email, name:name, description:description, points:points, sprint:sprint})
+    addTask(token, user, email, name, description, points, due, sprint, callback, errorCallback){
+        axios.post(endpoints.addTask, {token: token, user:user, email:email, name:name, description:description, points:points, sprint:sprint, due:due})
             .then((res) => callback(res))
             .catch((err) => errorCallback(err.response.data))
     }

@@ -18,9 +18,6 @@ function Navigation(props){
                 <LinkContainer to={"/"}>
                     <Nav.Link>Home</Nav.Link>
                 </LinkContainer>
-                <LinkContainer to={"/tasks"}>
-                    <Nav.Link>Tasks</Nav.Link>
-                </LinkContainer>
                 {context.authentication.role === "ADMIN" &&
                     <>
                     <LinkContainer to={"/users"}>
@@ -29,13 +26,13 @@ function Navigation(props){
                     <LinkContainer to={"/projects"}>
                         <Nav.Link>Projects</Nav.Link>
                     </LinkContainer>
-                    <LinkContainer to={"/sprints"}>
-                    <Nav.Link>Sprints</Nav.Link>
-                    </LinkContainer>
                     </>
                 }
                 {context.authentication.role === "MANAGER" &&
                     <>
+                        <LinkContainer to={"/mytasks"}>
+                            <Nav.Link>Tasks</Nav.Link>
+                        </LinkContainer>
                         <LinkContainer to={"/projects"}>
                             <Nav.Link>Projects</Nav.Link>
                         </LinkContainer>
@@ -44,13 +41,17 @@ function Navigation(props){
                         </LinkContainer>
                     </>
                 }
+                {context.authentication.role === "USER" &&
+                <>
+                    <LinkContainer to={"/mytasks"}>
+                        <Nav.Link>Tasks</Nav.Link>
+                    </LinkContainer>
+                </>
+                }
             </Nav>
             <Nav className="ml-auto">
                 <NavDropdown title={context.authentication.email}>
                     <NavDropdown.Item onClick={signOut}>Sign out</NavDropdown.Item>
-                    <NavDropdown.Divider /><LinkContainer to={"/settings"}>
-                    <NavDropdown.Item>Settings</NavDropdown.Item>
-                </LinkContainer>
                 </NavDropdown>
             </Nav>
         </Navbar>)

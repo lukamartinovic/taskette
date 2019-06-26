@@ -6,7 +6,7 @@ import {AuthContext, ProjectContext} from '../../context/'
 function AddSprint(props){
     const project_id = useContext(ProjectContext).projectContext.activeProject._id;
     const token = useContext(AuthContext).authentication.token;
-    const [values, setValues] = useState({startDate: "2019-01-01", endDate: "2019-01-07", points: 20, name:""});
+    const [values, setValues] = useState({startDate: "2019-01-01", endDate: "2019-01-07", points: 20, name:"Name"});
     const [submitting, setSubmitting] = useState(false);
     const [success, setSuccess] = useState(false);
 
@@ -34,7 +34,8 @@ function AddSprint(props){
         e.preventDefault();
         api.addSprint(token, project_id, values.points, values.startDate, values.endDate, values.name,
             (res)=>{setSubmitting(false)
-            setSuccess(true)},
+            setSuccess(true)
+            setValues({startDate: "2019-01-01", endDate: "2019-01-07", points: 20, name:"Name"})},
             (err)=>{console.log(err)})
     }
 

@@ -41,6 +41,10 @@ const TaskSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "Sprint",
         required: true
+    },
+    due: {
+        type: Date,
+        required: true
     }
 });
 

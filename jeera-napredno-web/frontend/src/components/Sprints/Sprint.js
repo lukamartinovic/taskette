@@ -15,9 +15,9 @@ function Sprint(props){
     }
 
     console.log(props.sprint);
-    return(<Card style={{maxWidth: "35vh", minWidth: "25vh"}}>
+    return(<Card style={{maxWidth: "35vh", minWidth: "25vh", marginBottom:"1em"}}>
         <Card.Header>
-            <Card.Text>{`${props.sprint.name}`} <Button disabled={props.addingTasksDisabled} onClick={()=>{setTaskDialog(true)}} style={{borderColor:"lightgray", marginLeft:"1em"}} variant="light"><FontAwesomeIcon icon={faPlus} size="xs"/>&nbsp;<FontAwesomeIcon icon={faTasks}/></Button></Card.Text>
+            <Card.Text>{`${props.sprint.name}`} <Button disabled={props.addingTasksDisabled} onClick={()=>{setTaskDialog(true)}} style={{borderColor:"lightgray", marginLeft:"1em", marginRight:"1em"}} variant="light"><FontAwesomeIcon icon={faPlus} size="xs"/>&nbsp;<FontAwesomeIcon icon={faTasks}/></Button>{`${props.sprint.currentPoints}/${props.sprint.points}`}</Card.Text>
         </Card.Header>
         <Card.Body>
             <ListGroup>
@@ -36,7 +36,7 @@ function Sprint(props){
         <Card.Footer>
             <Card.Text className="text-muted text-center text-weight-bold">{`${moment(props.sprint.startDate).format("DD.MM.YYYY")} - ${moment(props.sprint.endDate).format("DD.MM.YYYY")}`}</Card.Text>
         </Card.Footer>
-        <AddTask sprint={props.sprint} token={props.token} show={taskDialog} handleHide={()=>{setTaskDialog(false)}}/>
+        <AddTask sprint={props.sprint} token={props.token} show={taskDialog} handleHide={()=>{setTaskDialog(false); props.refetch();}}/>
     </Card>)
 }
 

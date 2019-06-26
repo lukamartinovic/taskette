@@ -6,6 +6,7 @@ const projectSchema = require('../schema/Project');
 const Project = mongoose.model('Project', projectSchema);
 const jwt = require("jsonwebtoken");
 const Schema = mongoose.Schema;
+
 module.exports.addProject = async function (req, res, next) {
 
     const Company = mongoose.model('Company', companySchema);
@@ -48,11 +49,15 @@ module.exports.getProjects = async function (req, res, next) {
     try{
         const {page, pageSize, token} = req.body;
         const payload = await jwt.verify(token, process.env.SECRET);
-        //TODO: add authorization
-        const [projects, count] = await Promise.all([
+        let projects = [];
+        let count = 0;
+        if((payload.role === "EMPLOYEE") || (payload.role === "MANAGER")){
+            projects = await Project.find({users: payload.id}).populate({path: "sprints", match: { tasks: { $not: { $size: 0}}}, populate: { path: "tasks", match: {user: payload.id}}})
+        } else {
+        [projects, count] = await Promise.all([
             Project.find({}).populate("sprints").skip(pageSize*(page-1)).limit(pageSize),
             Project.countDocuments()
-        ]);
+        ]);}
         res.send({projects, count});
     }catch(err) {return next(err)}
 
