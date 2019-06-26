@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {Button, Form, FormGroup, Modal} from 'react-bootstrap';
+import {Alert, Button, Form, FormGroup, Modal} from 'react-bootstrap';
 import api from '../../api/api';
 import {withFormik} from 'formik';
 import * as Yup from 'yup';
@@ -17,13 +17,15 @@ function handleSubmit(values, {resetForm, setErrors, setSubmitting, props, setSt
   console.log(sprint);
   const token = props.token;
   function callback(res){
-      console.log(res)
+    setStatus({success:true});
+    setSubmitting(false);
   }
   function errorCallback(err){
       console.log(err)
     if(err.errors.points){
       setErrors({points: `Points remaining in sprint ${props.sprint.points - props.sprint.currentPoints}`})
     }
+    setSubmitting(false);
   }
   api.addTask(token, undefined, values.user, values.name, values.description, values.points, props.sprint._id, callback, errorCallback)
 }
@@ -51,8 +53,8 @@ function AddTask({values, errors, handleChange, handleSubmit, validationSchema, 
   const {name, description, points, user, preview} = values;
   useEffect(() => {setStatus({success:false}); console.log(values)}, [values, touched, setStatus]);
   return(
-      <Modal size="xl" show>
-        <Modal.Header closeButton><Modal.Title>Create task</Modal.Title></Modal.Header>
+      <Modal onHide={props.handleHide} size="xl" show={props.show}>
+        <Modal.Header closeButton><Modal.Title>{`Create task in ${props.sprint.name}`}</Modal.Title></Modal.Header>
         <Modal.Body>
           <Form noValidate onSubmit={handleSubmit}>
             <FormGroup controlId="name">
@@ -81,7 +83,11 @@ function AddTask({values, errors, handleChange, handleSubmit, validationSchema, 
               <Form.Control placeholder="User email" value={user} onChange={handleChange} as="input"/>
               {touched.user && errors.user && <Form.Text className="text-danger">{errors.user}</Form.Text>}
             </FormGroup>
-            <Button type="submit" block>Submit</Button>
+            {status.success ?
+                <Alert variant="success" className="w-100 text-center">Task successfully created!</Alert>:
+                <Button block disabled={isSubmitting} variant="primary" type="submit">
+                  Submit
+                </Button>}
           </Form>
         </Modal.Body>
         <Modal.Footer className="">

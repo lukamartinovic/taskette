@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react';
 import api from '../../api/api'
 import {AuthContext} from '../../context/'
-import {AddTask, Sprint} from "../index";
+import {Sprint} from "../index";
 import {CardDeck} from 'react-bootstrap'
 
 function Sprints(props){
@@ -15,10 +15,9 @@ function Sprints(props){
 
     return(<><CardDeck>
         {sprints.map(sprint => {
-            return <Sprint key={sprint._id} sprint={sprint}/>
+            return <Sprint addingTasksDisabled={sprint.currentPoints === sprint.points} key={sprint._id} token={token} key={sprint._id} sprint={sprint}/>
         })}
     </CardDeck>
-            <AddTask sprint={sprints[0]} token={token}/>
             </>
     )
 }

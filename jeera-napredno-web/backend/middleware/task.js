@@ -83,7 +83,7 @@ module.exports.changeTaskStatus = async function editTask(req, res, next){
 
         task.status = req.body.status.toUpperCase();
 
-        await task.save();
+        await task.save({validateBeforeSave: false});
         res.send(task);
     }
     catch(err){

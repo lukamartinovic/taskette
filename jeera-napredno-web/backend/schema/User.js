@@ -17,7 +17,7 @@ function validateAndHash(password){
 }
 
 function validateLevel(level){
-    if((level !== null && this.role !== "manager") || (this.role === "manager" && this.level === null))
+    if((level !== null && this.role !== "MANAGER") || (this.role === "MANAGER" && this.level === null))
         return false;
 }
 

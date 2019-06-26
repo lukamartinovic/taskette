@@ -7,6 +7,7 @@ async function validatePoints(points){
     const Sprint = mongoose.model('Sprint', sprintSchema);
     const sprintPromise = Sprint.find({_id: this.sprint}).exec();
     const sprint = await sprintPromise;
+    console.log(this.points)
     return(sprint[0].points - sprint[0].currentPoints >= this.points);
 }
 
