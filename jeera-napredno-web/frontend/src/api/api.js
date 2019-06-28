@@ -1,88 +1,60 @@
 import endpoints from './endpoints';
 import axios from "axios";
 
+function apiCallPOST(endpoint, data, callback, errorCallback){
+    axios.post(endpoint, data)
+        .then(res => callback(res))
+        .catch(err => errorCallback(err))
+}
 
 const api = {
     passwordStrength: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,20}$/,
     getUserId(email){},
     login(email, password, callback, errorCallback){
-        axios.post(endpoints.login, {email: email, password: password})
-            .then((res) => callback(res))
-            .catch((err) => errorCallback(err))
+        apiCallPOST(endpoints.login, {email:email, password:password}, callback, errorCallback)
     },
-    getTasks(_id, token, callback){
-        axios.post(endpoints.getTasks, {user: _id, token: token})
-            .then((res) => callback(res))
-            .catch((err) => {console.log(err)})
+    getTasks(user_id, token, callback, errorCallback){
+        apiCallPOST(endpoints.getTasks, {_id:user_id, token:token}, callback, errorCallback)
     },
-    changeTaskStatus(_id, status, token, callback){
-        axios.post(endpoints.changeTaskStatus, {id: _id, token: token, status: status})
-            .then((res) => callback(res))
-            .catch((err) => {console.log(err)})
+    changeTaskStatus(task_id, status, token, callback, errorCallback){
+        apiCallPOST(endpoints.changeTaskStatus, {_id:task_id, status:status, token:token}, callback, errorCallback)
     },
     getUsers(token, pageSize, page, callback, errorCallback){
-        axios.post(endpoints.getUsers, {token:token, pageSize: pageSize, page:page})
-            .then((res) => callback(res))
-            .catch((err) => errorCallback(err))
+        apiCallPOST(endpoints.getUsers, {token: token, pageSize:pageSize, page:page}, callback, errorCallback)
     },
     addUser(email, firstName, lastName, password, role, token, callback, errorCallback){
-        axios.post(endpoints.addUser,
-            {email: email, firstName: firstName, lastName: lastName, password: password, token: token, role:role})
-            .then((res) => callback(res))
-            .catch((err) => errorCallback(err.response.data))
+        apiCallPOST(endpoints.addUser, {email:email, firstName:firstName, lastName:lastName, password:password, role:role, token:token}, callback, errorCallback)
     },
     validateToken(token, callback, errorCallback){
-        axios.post(endpoints.validateToken, {token:token})
-            .then((res)=> callback(res))
-            .catch((err) => errorCallback(err))
+        apiCallPOST(endpoints.validateToken, {token:token}, callback, errorCallback)
     },
     searchUsers(token, searchString, n, callback, errorCallback){
-        axios.post(endpoints.searchUsers, {token:token, searchString:searchString, n:n})
-            .then((res)=>{callback(res)})
-            .catch((err)=>{errorCallback(err)})
+        apiCallPOST(endpoints.searchUsers, {token:token, searchString:searchString, n:n}, callback, errorCallback)
     },
     getProjects(token, page, pageSize, callback, errorCallback){
-        axios.post(endpoints.getProjects, {token:token, page:page, pageSize:pageSize})
-            .then((res)=>{callback(res)})
-            .catch((err) => {errorCallback(err)})
+        apiCallPOST(endpoints.getProjects, {token:token, page:page, pageSize:pageSize}, callback, errorCallback)
     },
     getUsersById(token, _ids, callback, errorCallback){
-        axios.post(endpoints.getUsersById, {token:token, _ids:_ids})
-            .then((res) => {callback(res)})
-            .catch((err) =>{errorCallback(err)})
+        apiCallPOST(endpoints.getUsersById, {token:token, _ids:_ids}, callback, errorCallback);
     },
-    //TODO: figure out the company stuff
     addProject(token, users, description, name, callback, errorCallback){
-        axios.post(endpoints.addProject, {token:token, name:name, users:users, description:description, company: "5d0d283a95283114b0a5df21"})
-            .then((res)=>{callback(res)})
-            .catch((err)=>{errorCallback(err)})
+        apiCallPOST(endpoints.addProject, {token:token, users:users, description: description, name: name}, callback, errorCallback)
     },
     editProjectUsers(token, project, users, callback, errorCallback){
-        axios.post(endpoints.editProjectUsers, {token:token, project:project, users:users})
-            .then((res)=>{callback(res)})
-            .catch((err)=>{errorCallback(err)})
+        apiCallPOST(endpoints.editProjectUsers, {token:token, project:project, users:users}, callback, errorCallback)
     },
     addSprint(token, project, points, startDate, endDate, name, callback, errorCallback){
-        axios.post(endpoints.addSprint, {token:token, project:project, startDate:startDate, endDate:endDate, points:points, name:name})
-            .then((res)=>{callback(res)})
-            .catch((err)=>{errorCallback(err)})
+        apiCallPOST(endpoints.addSprint, {token:token, project:project, startDate:startDate, endDate:endDate, points:points, name:name}, callback, errorCallback)
     },
     getSprints(token, callback, errorCallback){
-        axios.post(endpoints.getSprints, {token:token})
-            .then((res)=>{callback(res)})
-            .catch((err)=>{errorCallback(err)})
+        apiCallPOST(endpoints.getSprints, {token:token}, callback, errorCallback)
     },
     addTask(token, user, email, name, description, points, due, sprint, callback, errorCallback){
-        axios.post(endpoints.addTask, {token: token, user:user, email:email, name:name, description:description, points:points, sprint:sprint, due:due})
-            .then((res) => callback(res))
-            .catch((err) => errorCallback(err.response.data))
+        apiCallPOST(endpoints.addTask, {token: token, user:user, email:email, name:name, description:description, points:points, sprint:sprint, due:due}, callback, errorCallback)
     },
     getSubEmployees(token, callback, errorCallback){
-        axios.post(endpoints.getEmployees, {token:token})
-            .then((res)=>{callback(res)})
-            .catch((err)=>{errorCallback(err)})
+        apiCallPOST(endpoints.getEmployees, {token:token}, callback, errorCallback)
     }
-
 };
 
 export default api;
