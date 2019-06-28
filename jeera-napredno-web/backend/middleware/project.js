@@ -6,6 +6,7 @@ const projectSchema = require('../schema/Project');
 const Project = mongoose.model('Project', projectSchema);
 const jwt = require("jsonwebtoken");
 const Schema = mongoose.Schema;
+const User = mongoose.model('User', userSchema);
 
 module.exports.addProject = async function (req, res, next) {
 
@@ -45,6 +46,15 @@ module.exports.editProjectUsers = async function (req, res, next) {
 
 };
 
+module.exports.getProject = async function (req, res, next) {
+    try{
+        console.log("getting project")
+        const {_id} = req.body;
+        const project = await Project.findOne({_id: _id}).populate("users").populate("sprints").exec();
+        res.send(project);
+    }catch(err) {return next(err)}
+};
+
 module.exports.getProjects = async function (req, res, next) {
     try{
         const {page, pageSize, token} = req.body;
@@ -55,7 +65,7 @@ module.exports.getProjects = async function (req, res, next) {
             projects = await Project.find({users: payload.id}).populate({path: "sprints", match: { tasks: { $not: { $size: 0}}}, populate: { path: "tasks", match: {user: payload.id}}})
         } else {
         [projects, count] = await Promise.all([
-            Project.find({}).populate("sprints").skip(pageSize*(page-1)).limit(pageSize),
+            Project.find({}).skip(pageSize*(page-1)).limit(pageSize),
             Project.countDocuments()
         ]);}
         res.send({projects, count});

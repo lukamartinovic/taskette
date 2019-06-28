@@ -54,6 +54,9 @@ const api = {
     },
     getSubEmployees(token, callback, errorCallback){
         apiCallPOST(endpoints.getEmployees, {token:token}, callback, errorCallback)
+    },
+    getProject(token, _id, callback, errorCallback){
+        apiCallPOST(endpoints.getProject, {token:token, _id:_id}, callback, errorCallback)
     }
 };
 

@@ -29,6 +29,7 @@ router.delete('/task/:id/', task.removeTask, errorHandler);
 router.post('/task/edit', user.authenticate, task.editTask, errorHandler);
 router.post('/task/changeStatus', user.authenticate, task.changeTaskStatus, errorHandler)
 
+router.post('/projects/getProject', user.authenticate, project.getProject, errorHandler);
 router.post('/project/add', project.addProject, errorHandler);
 router.post('/projects', project.getProjects, errorHandler);
 router.post('/project/editUsers', project.editProjectUsers, errorHandler);

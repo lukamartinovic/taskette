@@ -25,7 +25,7 @@ function handleSubmit(values, {resetForm, setErrors, setSubmitting, props, setSt
         props.setPage();
     }
     function errorCallback(err){
-        if(err.code === 11000)
+        if(err.response.data.code === 11000)
             setErrors({email: "That email is already taken"});
         setSubmitting(false);
     }

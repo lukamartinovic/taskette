@@ -83,7 +83,7 @@ function ProjectsAdministration(props){
         <Col sm={8}>
                 {projectContext.activeProject &&
                 <Route path={`/projects/${projectContext.activeProject._id}`} render={
-                    (props) => {return <ActiveProject {...props} token={context.token}/>}
+                    (props) => {return <ActiveProject project_id={projectContext.activeProject._id} {...props} token={context.token}/>}
                 }/>}
         </Col>
         </Row>

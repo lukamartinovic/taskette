@@ -14,11 +14,6 @@ const ProjectSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "User"
     }],
-    company: {
-        type: Schema.Types.ObjectId,
-        ref: "Company",
-        required: true
-    },
     sprints: [{
         type: Schema.Types.ObjectId,
         ref: "Sprint"

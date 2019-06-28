@@ -1,16 +1,11 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {Table} from "react-bootstrap";
 import moment from 'moment';
-import {ProjectContext} from '../../context'
 
 function SprintTable(props){
-    const context = useContext(ProjectContext).projectContext;
-    const sprints = context.activeProject.sprints;
-
-
     return(
         <>
-        {sprints.length !== 0 && <Table responsive="lg" size="sm"  striped hover borderless>
+        {props.sprints.length !== 0 && <Table responsive="lg" size="sm"  striped hover borderless>
             <thead>
             <tr>
                 <th className="text-left">Name</th>
@@ -20,9 +15,9 @@ function SprintTable(props){
             </tr>
             </thead>
             <tbody className="text-left">
-            {sprints.map(
+            {props.sprints.map(
                 (sprint) => {
-                    const {name, startDate, endDate, tasks, _id} = sprint;
+                    const {name, startDate, endDate, tasks = 0, _id} = sprint;
                     return (
                         <tr key={_id}>
                             <td style={{width:"25%"}} >{name}</td>
