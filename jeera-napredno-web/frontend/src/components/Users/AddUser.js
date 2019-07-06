@@ -60,7 +60,7 @@ function AddUser({values, errors, handleChange, handleSubmit, validationSchema, 
     const {lastName, role, password, email, firstName, level} = values;
 
     return(
-        <Modal onHide={()=>{props.history.push('/users/')}} show>
+        <Modal onHide={()=>{props.history.push('/users/'); props.setDialog();}} show>
             <Modal.Header closeButton>
                 <Modal.Title>Create user</Modal.Title>
             </Modal.Header>

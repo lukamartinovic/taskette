@@ -11,7 +11,7 @@ router.get('/', function (req, res) {
     res.send("Express running")
 });
 
-router.post('/users', user.authenticate, user.showUsers, errorHandler);
+router.get('/users', user.authenticate, user.showUsers, errorHandler);
 
 router.post('/user/add', user.addUser, errorHandler);
 router.post('/user/getUsers', user.authenticate, user.getUsersById, errorHandler);
@@ -21,7 +21,7 @@ router.post('/user/authenticate', user.authenticate, errorHandler);
 router.post('/user/tasks', user.authenticate, user.showTasks, errorHandler);
 router.post('/user/getid', user.getId, errorHandler);
 router.post('/user/validateToken', user.validateToken, errorHandler);
-router.post('/user/search', user.searchUsers, errorHandler);
+router.get('/user/search', user.authenticate, user.searchUsers, errorHandler);
 router.post('/user/getEmployees', user.authenticate, user.getSubEmployees, errorHandler)
 
 router.post('/task/add', user.authenticate, task.addTask, errorHandler);
@@ -29,9 +29,9 @@ router.delete('/task/:id/', task.removeTask, errorHandler);
 router.post('/task/edit', user.authenticate, task.editTask, errorHandler);
 router.post('/task/changeStatus', user.authenticate, task.changeTaskStatus, errorHandler)
 
-router.post('/projects/getProject', user.authenticate, project.getProject, errorHandler);
+router.get('/project/:_id', user.authenticate, project.getProject, errorHandler);
 router.post('/project/add', project.addProject, errorHandler);
-router.post('/projects', project.getProjects, errorHandler);
+router.get('/projects', user.authenticate, project.getProjects, errorHandler);
 router.post('/project/editUsers', project.editProjectUsers, errorHandler);
 router.post('/project/:id/addSprint', project.addSprint, errorHandler);
 

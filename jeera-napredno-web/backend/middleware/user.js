@@ -38,9 +38,7 @@ module.exports.addUser = async function (req, res, next) {
 
 module.exports.getUsersById = async function (req, res, next){
     try{
-        console.log("as")
-        //TODO:add authorization
-        const users = await User.find({_id: req.body._ids});
+        const users = await User.find({_id: req.params._ids});
         users.forEach(user => delete user.password);
         res.send(users);
         }
@@ -56,7 +54,7 @@ module.exports.login = async function (req, res, next) {
          const compare = await bcrypt.compare(req.body.password, user.password);
          if(!compare) throw loginErr;
          const token = jwt.sign(
-             {email:user.email, role: user.role, level: user.level, id: user._id, firstName: user.firstName},
+             {email:user.email, role: user.role, level: user.level, _id: user._id, firstName: user.firstName},
              process.env.SECRET,
              {expiresIn:"1d"}
 
@@ -68,7 +66,7 @@ module.exports.login = async function (req, res, next) {
 
 module.exports.authenticate = async function(req, res, next){
     try {
-        const payload = await jwt.verify(req.body.token, process.env.SECRET);
+        const payload = await jwt.verify(req.body.token || req.headers.authorization, process.env.SECRET);
         req.body.authPayload = payload;
         next();
     } catch(err) {return next(new Error("401"))}
@@ -92,9 +90,9 @@ module.exports.showTasks = async function(req, res, next){
 };
 
 module.exports.showUsers = async function(req, res, next){
-
     try{
-        const {page, pageSize, token} = req.body;
+        const {page, pageSize} = req.query;
+        const token = req.headers.authorization;
         const payload = await jwt.verify(token, process.env.SECRET);
         if (payload.role !== "ADMIN")
             throw {message:"Unauthorized"};
@@ -102,7 +100,7 @@ module.exports.showUsers = async function(req, res, next){
                  User.find({}).skip(pageSize*(page-1)).limit(pageSize),
                  User.countDocuments()
          ]);
-         console.log(users, count)
+         console.log(users);
          res.send({users, count});
     }catch(err) {return next(err)}
 };
@@ -110,9 +108,8 @@ module.exports.showUsers = async function(req, res, next){
 module.exports.showUsers = async function(req, res, next){
 
     try{
-        const {page, pageSize, token} = req.body;
-        const payload = await jwt.verify(token, process.env.SECRET);
-        if (payload.role !== "ADMIN")
+        const {page, pageSize} = req.body;
+        if (req.body.authPayload.role !== "ADMIN")
             throw {message:"Unauthorized"};
         const [users, count] = await Promise.all([
             User.find({}).skip(pageSize*(page-1)).limit(pageSize),
@@ -124,11 +121,10 @@ module.exports.showUsers = async function(req, res, next){
 
 module.exports.searchUsers = async function(req, res, next){
     try{
-        const {token, searchString, n} = req.body;
-        const payload = await jwt.verify(token, process.env.SECRET);
-        if (payload.role !== "ADMIN")
+        const {searchString, n} = req.query;
+        if (req.body.authPayload.role !== "ADMIN")
             throw {message:"Unauthorized"};
-        const users = await User.find({"email": {$regex: `.*${searchString}.*`}}).limit(n);
+        const users = await User.find({"email": {$regex: `.*${searchString}.*`}}).limit(parseInt(n));
         res.send(users);
     }catch(err) {return next(err)}
 };

@@ -10,7 +10,7 @@ const endpoints = {
     validateToken: `${host}/user/validateToken`,
     searchUsers: `${host}/user/search`,
     getProjects: `${host}/projects`,
-    getProject: `${host}/projects/getProject`,
+    getProject: `${host}/project`,
     getUsersById: `${host}/user/getUsers`,
     addProject: `${host}/project/add`,
     editProjectUsers: `${host}/project/editUsers`,

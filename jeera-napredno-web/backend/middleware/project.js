@@ -48,8 +48,8 @@ module.exports.editProjectUsers = async function (req, res, next) {
 
 module.exports.getProject = async function (req, res, next) {
     try{
-        console.log("getting project")
-        const {_id} = req.body;
+        console.log(req.params)
+        const {_id} = req.params;
         const project = await Project.findOne({_id: _id}).populate("users").populate("sprints").exec();
         res.send(project);
     }catch(err) {return next(err)}
@@ -57,12 +57,13 @@ module.exports.getProject = async function (req, res, next) {
 
 module.exports.getProjects = async function (req, res, next) {
     try{
-        const {page, pageSize, token} = req.body;
-        const payload = await jwt.verify(token, process.env.SECRET);
+        let {page, pageSize} = req.query;
+        [page, pageSize] = [parseInt(page), parseInt(pageSize)];
         let projects = [];
         let count = 0;
-        if((payload.role === "EMPLOYEE") || (payload.role === "MANAGER")){
-            projects = await Project.find({users: payload.id}).populate({path: "sprints", match: { tasks: { $not: { $size: 0}}}, populate: { path: "tasks", match: {user: payload.id}}})
+        const {role, _id} = req.body.authPayload;
+        if((role === "EMPLOYEE") || (role === "MANAGER")){
+            projects = await Project.find({users: _id}).populate({path: "sprints", match: { tasks: { $not: { $size: 0}}}, populate: { path: "tasks", match: {user: _id}}})
         } else {
         [projects, count] = await Promise.all([
             Project.find({}).skip(pageSize*(page-1)).limit(pageSize),

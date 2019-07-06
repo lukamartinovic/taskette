@@ -15,6 +15,7 @@ function Users(props){
     const [pages, setPages] = useState();
     const [loading, setLoading] = useState(false);
     const [searching, setSearching] = useState(false);
+    const [addUserDialog, setAddUserDialog] = useState(false);
 
     const pageSize = 12;
     const delay = 300;
@@ -38,7 +39,7 @@ function Users(props){
                     console.log(err)
                 })
             return () => {didCancel = true}
-        }, [authContext.authentication.token, page, pageSize, searching]
+        }, [authContext.authentication.token, page, pageSize, searching, addUserDialog]
     );
 
     function renderPagination(){
@@ -73,7 +74,7 @@ function Users(props){
 
     return(
         <>
-            <Route path="/users/createUser" render={(props)=>{return <AddUser {...props} setPage={()=>{setPage(1)}} authContext={authContext}/>}}/>
+            <Route path="/users/createUser" render={(props)=>{return <AddUser {...props} show={addUserDialog} setDialog={()=>{setAddUserDialog(!addUserDialog)}} setPage={()=>{setPage(1)}} authContext={authContext}/>}}/>
             <Container>
                     {UsersPanel()}
             </Container>

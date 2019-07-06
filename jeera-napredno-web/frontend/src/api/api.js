@@ -7,6 +7,15 @@ function apiCallPOST(endpoint, data, callback, errorCallback){
         .catch(err => errorCallback(err))
 }
 
+function apiCallGET(endpoint, data, token, callback, errorCallback, variable=""){
+    axios.get(`${endpoint}/${variable}`, {
+        headers: { Authorization: token},
+        params: {...data}
+    })
+        .then(res => callback(res))
+        .catch(err => errorCallback(err))
+}
+
 const api = {
     passwordStrength: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,20}$/,
     getUserId(email){},
@@ -20,7 +29,7 @@ const api = {
         apiCallPOST(endpoints.changeTaskStatus, {_id:task_id, status:status, token:token}, callback, errorCallback)
     },
     getUsers(token, pageSize, page, callback, errorCallback){
-        apiCallPOST(endpoints.getUsers, {token: token, pageSize:pageSize, page:page}, callback, errorCallback)
+        apiCallGET(endpoints.getUsers, {pageSize:pageSize, page:page}, token, callback, errorCallback)
     },
     addUser(email, firstName, lastName, password, role, token, callback, errorCallback){
         apiCallPOST(endpoints.addUser, {email:email, firstName:firstName, lastName:lastName, password:password, role:role, token:token}, callback, errorCallback)
@@ -29,10 +38,10 @@ const api = {
         apiCallPOST(endpoints.validateToken, {token:token}, callback, errorCallback)
     },
     searchUsers(token, searchString, n, callback, errorCallback){
-        apiCallPOST(endpoints.searchUsers, {token:token, searchString:searchString, n:n}, callback, errorCallback)
+        apiCallGET(endpoints.searchUsers, {searchString:searchString, n:n}, token, callback, errorCallback)
     },
     getProjects(token, page, pageSize, callback, errorCallback){
-        apiCallPOST(endpoints.getProjects, {token:token, page:page, pageSize:pageSize}, callback, errorCallback)
+        apiCallGET(endpoints.getProjects, {page:page, pageSize:pageSize}, token, callback, errorCallback)
     },
     getUsersById(token, _ids, callback, errorCallback){
         apiCallPOST(endpoints.getUsersById, {token:token, _ids:_ids}, callback, errorCallback);
@@ -56,7 +65,7 @@ const api = {
         apiCallPOST(endpoints.getEmployees, {token:token}, callback, errorCallback)
     },
     getProject(token, _id, callback, errorCallback){
-        apiCallPOST(endpoints.getProject, {token:token, _id:_id}, callback, errorCallback)
+        apiCallGET(endpoints.getProject, {}, token, callback, errorCallback, _id)
     }
 };
 
